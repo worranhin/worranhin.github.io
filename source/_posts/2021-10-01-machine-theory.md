@@ -3,6 +3,7 @@ title: 机械原理
 author: Hin
 date: 2021-10-01 02:04
 tag: note
+math: true
 ---
 
 机械原理研究的对象是机械，研究的内容是有关机械的基本理论。
