@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="/assets/favicon-32x32.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hin">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="机械原理研究的对象是机械，研究的内容是有关机械的基本理论。 一些概念 机械是机器和机构的总称。 机构是用来传递与变换运动和力的可动装置。 机器是根据某种使用要求而设计的用来变换或传递能量、物料和信息的执行机械运动的装置。  机构的结构分析机构由以下两部分组成：  构件：机器中的每个独立运动单元 运动副：两构件直接接触而组成的可动连接  自由度构件的自由度构件在空间中有6个相对自由度，当形成运动副后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机械原理">
+<meta property="og:url" content="https://worranhin.github.io/2021/09/30/machine-theory/index.html">
+<meta property="og:site_name" content="Hin&#39;s 灵质空间">
+<meta property="og:description" content="机械原理研究的对象是机械，研究的内容是有关机械的基本理论。 一些概念 机械是机器和机构的总称。 机构是用来传递与变换运动和力的可动装置。 机器是根据某种使用要求而设计的用来变换或传递能量、物料和信息的执行机械运动的装置。  机构的结构分析机构由以下两部分组成：  构件：机器中的每个独立运动单元 运动副：两构件直接接触而组成的可动连接  自由度构件的自由度构件在空间中有6个相对自由度，当形成运动副后">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-30T18:04:00.000Z">
+<meta property="article:modified_time" content="2023-04-09T01:26:07.443Z">
+<meta property="article:author" content="Hin">
+<meta property="article:tag" content="note">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>机械原理 | Hin&#39;s 灵质空间</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"worranhin.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Hin&#39;s 灵质空间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="机械原理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-01 02:04" pubdate>
+          2021年10月1日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">机械原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>机械原理研究的对象是机械，研究的内容是有关机械的基本理论。</p>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><ul>
+<li><strong>机械</strong>是<strong>机器</strong>和<strong>机构</strong>的总称。</li>
+<li><strong>机构</strong>是用来传递与变换运动和力的可动装置。</li>
+<li><strong>机器</strong>是根据某种使用要求而设计的用来变换或传递能量、物料和信息的执行机械运动的装置。</li>
+</ul>
+<h2 id="机构的结构分析"><a href="#机构的结构分析" class="headerlink" title="机构的结构分析"></a>机构的结构分析</h2><p>机构由以下两部分组成：</p>
+<ol>
+<li>构件：机器中的每个独立运动单元</li>
+<li>运动副：两构件直接接触而组成的可动连接</li>
+</ol>
+<h3 id="自由度"><a href="#自由度" class="headerlink" title="自由度"></a>自由度</h3><h4 id="构件的自由度"><a href="#构件的自由度" class="headerlink" title="构件的自由度"></a>构件的自由度</h4><p>构件在空间中有6个相对自由度，当形成运动副后，将受到约束。</p>
+<blockquote>
+<p>自由度以 $f$ 表示；<br>约束度以 $s$ 表示。<br>两者的关系为：$f&#x3D;6-s$</p>
+</blockquote>
+<h4 id="机构的自由度"><a href="#机构的自由度" class="headerlink" title="机构的自由度"></a>机构的自由度</h4><p>机构自由度的计算公式为：<br>$$F&#x3D;3n-(2p_l+p_h)$$</p>
+<blockquote>
+<p>式中 $n$ 为自由构件数， $p_l$ 为低副数， $p_h$ 为高副数</p>
+</blockquote>
+<h4 id="计算自由度时的注意事项"><a href="#计算自由度时的注意事项" class="headerlink" title="计算自由度时的注意事项"></a>计算自由度时的注意事项</h4><ol>
+<li>复合铰链：m 个构件有 (m-1) 个转动副。</li>
+<li>重复约束只能算一个。</li>
+<li>多处公法线不重合的平面高副构成复合高副，相当于一个低副。</li>
+<li>去除局部约束度</li>
+<li>除去虚约束</li>
+</ol>
+<h3 id="运动副的分类"><a href="#运动副的分类" class="headerlink" title="运动副的分类"></a>运动副的分类</h3><ul>
+<li>运动副按<em>约束度</em>可分为5类——约束度为1的称为I级副(class I pairs)，以此类推。</li>
+<li>按<em>接触情况</em>可分为：<ul>
+<li>高副：单一点或线接触（平面约束度为1）</li>
+<li>低副：面接触（平面约束度为2）</li>
+</ul>
+</li>
+<li>按<em>相对运动种类</em>分为：<ul>
+<li>转动副 (revolute pair)</li>
+<li>移动副 (prismatic pair)</li>
+<li>螺旋副 (helical pair)</li>
+<li>球面副 (spherical)</li>
+</ul>
+</li>
+</ul>
+<h3 id="运动链"><a href="#运动链" class="headerlink" title="运动链"></a>运动链</h3><p>构件通过运动副的连接而构成的可相对运动的系统称为<strong>运动链</strong></p>
+<p>运动链可分为：</p>
+<ul>
+<li>闭式运动链（闭链）</li>
+<li>开式运动链（开链）</li>
+</ul>
+<p>将<strong>运动链</strong>中的某一构件固定为机架即得一<strong>机构</strong>。<br>此时，<strong>机构</strong>由<strong>机架</strong>、<strong>原动件</strong>和<strong>从动件</strong>组成。</p>
+<h3 id="机构运动简图"><a href="#机构运动简图" class="headerlink" title="机构运动简图"></a>机构运动简图</h3><p>机构运动简图是对机构进行分析的重要工具。绘制机构运动简图需要按一定比例尺定出各运动副的位置，并将各运动副及构件用一定的符号表示出来。</p>
+<h3 id="机构具有确定运动的条件"><a href="#机构具有确定运动的条件" class="headerlink" title="机构具有确定运动的条件"></a>机构具有确定运动的条件</h3><p>机构具有确定运动的条件是原动件数目等于机构的自由度数目。</p>
+<h3 id="基本杆组"><a href="#基本杆组" class="headerlink" title="基本杆组"></a>基本杆组</h3><p>最简单的自由度为零的构件称为基本杆组（阿苏尔杆组）。</p>
+<p>基本杆组分为：</p>
+<ul>
+<li>Ⅱ 级组：2 构件 + 3高副</li>
+<li>Ⅲ 级组：4 构件 + 6高副</li>
+</ul>
+<p>遇到低副怎么办？ <strong>高副低代</strong> ！<br>一般转换为转动副</p>
+<h2 id="机构的运动分析"><a href="#机构的运动分析" class="headerlink" title="机构的运动分析"></a>机构的运动分析</h2><p>分析方法有图解法和解析法。</p>
+<h3 id="一般图解法的步骤"><a href="#一般图解法的步骤" class="headerlink" title="一般图解法的步骤"></a>一般图解法的步骤</h3><ol>
+<li>列速度或加速度的矢量方程</li>
+<li>按比例画出已知矢量</li>
+<li>根据矢量合成原理作图求解<blockquote>
+<p>注意：相对运动别忘了科氏加速度</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="速度瞬心法"><a href="#速度瞬心法" class="headerlink" title="速度瞬心法"></a>速度瞬心法</h3><h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><ol>
+<li>找瞬心</li>
+<li>根据两构件瞬心速度相等的关系列方程求解</li>
+</ol>
+<h4 id="瞬心确定方法"><a href="#瞬心确定方法" class="headerlink" title="瞬心确定方法"></a>瞬心确定方法</h4><ul>
+<li>转动副的瞬心在转动副中心</li>
+<li>移动副的瞬心在垂直导路方向的无穷远处</li>
+<li>纯滚动的瞬心在接触点处</li>
+<li>相对滑动的瞬心在过接触点高副元素的公法线上</li>
+<li>三心定理：三构件瞬心在同一直线</li>
+</ul>
+<h2 id="力分析"><a href="#力分析" class="headerlink" title="力分析"></a>力分析</h2><h3 id="移动副摩擦力"><a href="#移动副摩擦力" class="headerlink" title="移动副摩擦力"></a>移动副摩擦力</h3><p>摩擦角：<br>$$\varphi &#x3D; \arctan f$$</p>
+<p>拧紧螺母的平衡力矩：<br>$$M&#x3D;Fd_2&#x2F;2&#x3D;Gd_2\tan (\alpha + \varphi )&#x2F;2$$<br>放松螺母的平衡力矩：<br>$$M&#x3D;Gd_2\tan (\alpha - \varphi )&#x2F;2$$  </p>
+<h3 id="转动副的摩擦力"><a href="#转动副的摩擦力" class="headerlink" title="转动副的摩擦力"></a>转动副的摩擦力</h3><p>摩擦圆：<br>总反力始终相切于摩擦圆。<br>半径 $\rho &#x3D;f_Vr$</p>
+<blockquote>
+<p>$f_V&#x3D;kf (k&#x3D;1 \sim \pi &#x2F;2)$ 是当量摩擦系数。</p>
+</blockquote>
+<h2 id="机械效率"><a href="#机械效率" class="headerlink" title="机械效率"></a>机械效率</h2><ul>
+<li><strong>机械效率</strong> $\eta$ ：机械的输出功与输入功之比。<br>  $$\eta &#x3D; W_r&#x2F;W_d&#x3D;F_0&#x2F;F &#x3D; M_0&#x2F;M$$<blockquote>
+<p>$F_0$是理想驱动力</p>
+</blockquote>
+</li>
+<li><strong>损失率</strong>：损失功与输入功之比。</li>
+</ul>
+<h3 id="机器的机械效率"><a href="#机器的机械效率" class="headerlink" title="机器的机械效率"></a>机器的机械效率</h3><ol>
+<li>串联<br> $$\eta &#x3D; \eta_1 \eta_2 \dots \eta_k$$</li>
+<li>并联<br> $$\eta&#x3D; \frac{P_1\eta_1+P_2\eta_2+\dots+P_k\eta_k}{P_1+P_2+\dots+P_k }$$</li>
+</ol>
+<h2 id="自锁条件"><a href="#自锁条件" class="headerlink" title="自锁条件"></a>自锁条件</h2><ul>
+<li>驱动力在摩擦角内</li>
+<li>单力作用在摩擦圆内</li>
+<li>驱动力任意增大时 $G\le 0$<blockquote>
+<p>$G$为生产阻抗力</p>
+</blockquote>
+</li>
+<li>驱动力任意增大时有$\eta\le 0$</li>
+</ul>
+<hr>
+<p>未完待续……</p>
+<hr>
+<h2 id="词汇表"><a href="#词汇表" class="headerlink" title="词汇表"></a>词汇表</h2><table>
+<thead>
+<tr>
+<th align="center">中文 ch</th>
+<th align="center">英文 en</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">机械</td>
+<td align="center">machinery</td>
+</tr>
+<tr>
+<td align="center">机器</td>
+<td align="center">machine</td>
+</tr>
+<tr>
+<td align="center">机构</td>
+<td align="center">mechanism</td>
+</tr>
+<tr>
+<td align="center">总反力</td>
+<td align="center">total reaction</td>
+</tr>
+<tr>
+<td align="center">摩擦角</td>
+<td align="center">angle of friction</td>
+</tr>
+<tr>
+<td align="center">理想驱动力</td>
+<td align="center">ideal driving force</td>
+</tr>
+<tr>
+<td align="center">机械原理</td>
+<td align="center">theory of machines and mechanisms</td>
+</tr>
+<tr>
+<td align="center">自由度</td>
+<td align="center">degree of freedom</td>
+</tr>
+<tr>
+<td align="center">约束度</td>
+<td align="center">degree of constraint</td>
+</tr>
+<tr>
+<td align="center">转动副</td>
+<td align="center">revolute pair</td>
+</tr>
+<tr>
+<td align="center">移动副</td>
+<td align="center">prismatic pair</td>
+</tr>
+<tr>
+<td align="center">螺旋副</td>
+<td align="center">helical pair</td>
+</tr>
+<tr>
+<td align="center">球面副</td>
+<td align="center">spherical</td>
+</tr>
+<tr>
+<td align="center">闭式运动链</td>
+<td align="center">closed kinematic chain</td>
+</tr>
+<tr>
+<td align="center">开式运动链</td>
+<td align="center">open kinematic chain</td>
+</tr>
+<tr>
+<td align="center">机架</td>
+<td align="center">ixed link</td>
+</tr>
+<tr>
+<td align="center">原动件</td>
+<td align="center">driving link</td>
+</tr>
+<tr>
+<td align="center">从动件</td>
+<td align="center">drived link</td>
+</tr>
+<tr>
+<td align="center">运动链</td>
+<td align="center">kinematic chain</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/note/">#note</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>机械原理</div>
+      <div>https://worranhin.github.io/2021/09/30/machine-theory/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/09/30/national-day/" title="🎉国庆快乐🎉">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🎉国庆快乐🎉</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/29/change-name/" title="站名予定">
+                        <span class="hidden-mobile">站名予定</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © 2023 Hin. | Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>   with   <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
