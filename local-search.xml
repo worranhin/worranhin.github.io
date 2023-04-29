@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>人与智能</title>
+    <link href="/2023/04/29/chatbot/"/>
+    <url>/2023/04/29/chatbot/</url>
+    
+    <content type="html"><![CDATA[<p>突然想到，有了像 chatGPT 这样的技术，是否可以做到让 AI 学习一个人的说话方式，并模仿他说话呢？想到这里，我又不禁联想到《克拉拉与太阳》里面，乔西的家人试图让克拉拉学习模仿乔西的行为，以便在乔西离世后代替她的陪伴。此外，在今年春节上映的电影《流浪地球2》中也提到了数字生命的概念，电影中的人物试图通过计算机模拟他在车祸中失去的女儿。在动画剧集《万神殿》中也有一个称为“上传智能” (Uploaded Intelligence) 的概念，这里是通过将人类的大脑破坏性扫描并上传到计算机中，从而摆脱身体遭受的疾病。</p><p>上述作品都涉及到了 AI 在人类情感上的应用，他们都或多或少地希望 AI 能够复现他们失去的亲人。而现代技术的发展又让这样的科幻场景离我们越来越近，随之而来的可能是一些关于人的哲学思考。</p><p>不管怎样，还是非常好奇，期待这样的技术能继续发展下去，我相信上述场景应该不用多久就可以看到了吧。真想看看到时人们是怎么探讨这些哲学问题的。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>AI</tag>
+      
+      <tag>杂想</tag>
+      
+      <tag>chatGPT</tag>
+      
+      <tag>科幻</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>技术更迭</title>
     <link href="/2023/04/10/GPT/"/>
     <url>/2023/04/10/GPT/</url>
@@ -11,6 +36,12 @@
     <content type="html"><![CDATA[<p>突然想起来，之前 NFT、数字货币的热度都被 chatGPT 等 AI 技术冲淡了。现在技术发展的速度还真是快啊。</p>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>杂想</tag>
+      
+    </tags>
     
   </entry>
   
@@ -34,7 +65,7 @@
     <link href="/2023/04/05/Leaf/"/>
     <url>/2023/04/05/Leaf/</url>
     
-    <content type="html"><![CDATA[<p>树叶从枝头脱离，<br>缓缓飘落，<br>有的落在冰冷的水泥地上，<br>有的落在湿润的泥土地中。  </p><p>从高空中落下的雨滴，<br>飘荡在空中的水汽，<br>她们陪在落叶身旁，<br>让他不会因孤独而感伤。  </p><p>泥地中的落叶在朋友们的陪伴下，投入泥土的怀抱，<br>身体慢慢瓦解，<br>灵魂回到树梢。  </p><p>水泥地上的落叶在一脚又一脚的踩踏下，与大地紧靠，<br>在天气变得干爽后，他将得以摆脱地面的束缚，随风飘去，<br>又或者，在这之前，被好心的人捡起，送往未知的地方。</p>]]></content>
+    <content type="html"><![CDATA[<p>树叶从枝头脱离，<br>缓缓飘落，<br>有的落在冰冷的水泥地上，<br>有的落在湿润的泥土地中。  </p><span id="more"></span><p>从高空中落下的雨滴，<br>飘荡在空中的水汽，<br>她们陪在落叶身旁，<br>让他不会因孤独而感伤。  </p><p>泥地中的落叶在朋友们的陪伴下，投入泥土的怀抱，<br>身体慢慢瓦解，<br>灵魂回到树梢。  </p><p>水泥地上的落叶在一脚又一脚的踩踏下，与大地紧靠，<br>在天气变得干爽后，他将得以摆脱地面的束缚，随风飘去，<br>又或者，在这之前，被好心的人捡起，送往未知的地方。</p>]]></content>
     
     
     
@@ -49,13 +80,19 @@
   
   
   <entry>
-    <title>空循环与 Volatile | 嵌入式</title>
+    <title>空循环与 Volatile</title>
     <link href="/2023/03/13/debug/"/>
     <url>/2023/03/13/debug/</url>
     
     <content type="html"><![CDATA[<p>今天下午啊，在帮老陈同学调试它的小屏幕程序代码。有段程序他在调试时可以运行，但直接编译下载到板子上就不能运行。通过<em>控制变量法</em>，我们可以知道应该是调试程序和编译程序存在某些不同。再看问题代码，是一段等待硬件响应的空循环。看到这里，我忍不住地向空循环中加了句 <code>delay</code> 延时。果然，加了后就能跑了。这时不禁联想到之前微机课设时看到的编译器用户手册中说道，对于一些奇怪的代码，编译器是会进行优化的。于是，把编译器的优化选项关掉，就可以成功运行了。查看配置后也发现，调试时是会阻止一些会影响调试的编译优化。</p><p>但是问题没这么简单，编译器怎会连这些基本的东西都没考虑到呢？出于好奇，把优化后的汇编程序弄出来看了看，其循环部分的<strong>大意</strong>如下所示：</p><div class="code-wrapper"><pre><code class="hljs ASM">WHILE_LOOP:CMP R3, #1BNE WHILE_LOOP</code></pre></div><p>好家伙它根本没重新读取值就比较，那不就死循环了吗！这时结合对优化的记忆再查阅 <em>ARMCC 手册</em>，可以发现它在讲 <code>volatile</code> 时提到了类似的例子。再看 <code>while</code> 循环里的条件判断，是一个判断外设变量的值，再进去看，果然这个库里的外设变量没有用 <code>volatile</code> 修饰。加上 <code>volatile</code>，开启编译器优化，上传程序，能跑。问题解决啦。到头来，还是代码不规范的问题呀，编译器是有考虑到这种情况的。</p><h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>代码规范真的很重要，按规范写代码可以省心不少。之前还看到一个新闻，一个人因为代码不规范被同事枪杀了，所以为了自己与他人的生命安全，同志们在写代码时一定要按规范行事。多看看编译器等的官方文档、User Guide 还是有帮助的。</p><p>顺便在这里摘录一些从 <em>ARMCC User Guide</em> 上看到的编程原则吧：</p><h3 id="循环编写"><a href="#循环编写" class="headerlink" title="循环编写"></a>循环编写</h3><p>写循环时尽可能做到：  </p><ul><li>使用简单的终止条件</li><li>编写倒数到 0 的循环 (count-down-to-zero loops)</li><li>使用 <code>unsigned int</code> 类型的计数器</li><li>测试与 0 相等 (test for equality against zero)</li></ul><h3 id="使用-volatile"><a href="#使用-volatile" class="headerlink" title="使用 volatile"></a>使用 volatile</h3><p>以下情况需要用 <code>volatile</code>：  </p><ul><li>访问内存映射的外设 (Accessing memory-mapped peripherals)</li><li>多线程共享全局变量</li><li>在中断或信号处理程序中访问全局变量</li></ul>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>嵌入式</tag>
+      
+    </tags>
     
   </entry>
   
@@ -79,7 +116,7 @@
     <link href="/2023/03/12/resize-image/"/>
     <url>/2023/03/12/resize-image/</url>
     
-    <content type="html"><![CDATA[<p>在写博客时有时因为图片太大，想要改变图片的大小，但是又不想嵌入 <em>html</em>。于是上网查了一下，很快啊，就有解决方法了。</p><p><a href="https://www.seanosier.com/2021/03/19/resize-images-in-jekyll-markdown/#:~:text=To%20resize%20an%20image%20in%20Jekyll%20Markdown%20without,Go%20in%20the%20Curly%20Braces%2C%20After%20the%20%3A">这篇文章</a>说到，只要在图片后添加 <code>&#123;:&#125;</code> 即可。示例如下：</p><div class="code-wrapper"><pre><code class="hljs arduino">![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;50%&quot;</span>&#125;![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;100px&quot;</span> height=<span class="hljs-string">&quot;200px&quot;</span>&#125;</code></pre></div><hr><blockquote><p>2023-04-08 更新</p></blockquote><p>Hexo 不支持这个语法，我的天哪！🥹</p>]]></content>
+    <content type="html"><![CDATA[<p>在写博客时有时因为图片太大，想要改变图片的大小，但是又不想嵌入 <em>html</em>。于是上网查了一下，很快啊，就有解决方法了。</p><span id="more"></span><p><a href="https://www.seanosier.com/2021/03/19/resize-images-in-jekyll-markdown/#:~:text=To%20resize%20an%20image%20in%20Jekyll%20Markdown%20without,Go%20in%20the%20Curly%20Braces%2C%20After%20the%20%3A">这篇文章</a>说到，只要在图片后添加 <code>&#123;:&#125;</code> 即可。示例如下：</p><div class="code-wrapper"><pre><code class="hljs arduino">![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;50%&quot;</span>&#125;![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;100px&quot;</span> height=<span class="hljs-string">&quot;200px&quot;</span>&#125;</code></pre></div><hr><blockquote><p>2023-04-08 更新</p></blockquote><p>Hexo 不支持这个语法，我的天哪！🥹</p>]]></content>
     
     
     
@@ -153,6 +190,12 @@
     
     
     
+    <tags>
+      
+      <tag>AI</tag>
+      
+    </tags>
+    
   </entry>
   
   
@@ -178,6 +221,12 @@
     <content type="html"><![CDATA[<p>今天去看展，拿到了一些小卡片，其中一张引起我的注意。</p><p><img src="/2021/10/14/photograph/card.jpg" alt="赠送的小卡片"></p><p>与以往的经验及所见所闻不同，一般的合照都让人群挤在一起，以尽可能地把所有人都包括在照片中，<br>但这样一来就显得十分拥挤，也经常不可避免地会有人的脸被挡住。但这张照片却把镜头拉远了，<br>同时让人物站得比较分散，这样一来，整个画面的构图变得稳定，人物也不拥挤，反而有一种简洁的感觉。<br>与此同时，这张照片中的主角很明显是两位老人家，也就是说摄影师通过远近关系来确定了画面的主次，真的太妙了！<br>而且照片展示了人物的全身，这样人物就能通过肢体语言更好地表现自己的个性。也让照片的内容变得多样而丰富，实在太有趣了！</p><p><img src="/2021/10/14/photograph/hezhao.jpg" alt="放大的照片"></p><p>不过不可否认的是，这张照片的人物也的确较少，人多起来可能也会比较难搞吧。但这的确可以作为今后拍合照时可以考虑的一种思路。</p>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>摄影</tag>
+      
+    </tags>
     
   </entry>
   
