@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>实用小工具</title>
+    <link href="/2023/09/22/newPC/"/>
+    <url>/2023/09/22/newPC/</url>
+    
+    <content type="html"><![CDATA[<p>最近实验室这边配了台新电脑，刚上手时还挺不习惯，陆续下载了一些实用的小工具后，才渐渐改造成自己习惯的样子。其中有一些小软件，开始还不记得名字，还得翻看自己的电脑才知道。所以在这里记录下这一类对我而言挺有用但不太记得名字的实用小软件。</p><span id="more"></span><h2 id="EarTrumpet"><a href="#EarTrumpet" class="headerlink" title="EarTrumpet"></a>EarTrumpet</h2><blockquote><p><a href="https://eartrumpet.app/">https://eartrumpet.app/</a></p></blockquote><p>EarTrumpet 是一个音量控制小工具，它以托盘形式存在于任务栏上，可以方便地更改各个程序的音量大小，属于是原生音量控制的增强版。</p><p><img src="https://eartrumpet.app/hero.gif" alt="EarTrumpet 界面"></p><h2 id="TranslucentTB"><a href="#TranslucentTB" class="headerlink" title="TranslucentTB"></a>TranslucentTB</h2><blockquote><p><a href="https://github.com/TranslucentTB/TranslucentTB">https://github.com/TranslucentTB/TranslucentTB</a></p></blockquote><p>这是一个桌面美化的工具，可以让 Windows 的任务栏变得完全透明，同时也有磨砂效果等其它选项。</p><p><img src="https://camo.githubusercontent.com/4a55c49eab17e22feb137f52efdb78f930365b7b56eb365ac769d20eb6508089/68747470733a2f2f692e696d6775722e636f6d2f654c47547477702e706e67" alt="TransllucentTB 效果"></p><h2 id="Twinkle-Tray"><a href="#Twinkle-Tray" class="headerlink" title="Twinkle Tray"></a>Twinkle Tray</h2><blockquote><p><a href="https://twinkletray.com/">https://twinkletray.com/</a></p></blockquote><p>Twinkle Tray 是一个屏幕亮度调节的工具，与 EarTrumpet 类似，以托盘形式存在，它可以让用户像笔记本电脑一样在系统里调节屏幕的亮度。此外，如果有多个屏幕，也可以在一个地方控制多个屏幕的亮度。</p><p><img src="https://twinkletray.com/assets/img/tt-comparison.jpg" alt="Twinkle Tray 界面"></p><h2 id="Pomotroid"><a href="#Pomotroid" class="headerlink" title="Pomotroid"></a>Pomotroid</h2><blockquote><p><a href="https://splode.github.io/pomotroid/">https://splode.github.io/pomotroid/</a></p></blockquote><p>Pomotroid 是一个开源、简洁的番茄钟应用，没有太多复杂的功能，很符合我的审美。</p><p><img src="https://splode.github.io/pomotroid/pomotroid-screens.png" alt="Pomotroid 界面"></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>工具</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>汕头之旅🚗</title>
     <link href="/2023/06/27/ShanTou/"/>
     <url>/2023/06/27/ShanTou/</url>
@@ -154,7 +173,7 @@
     
     <tags>
       
-      <tag>Tool</tag>
+      <tag>工具</tag>
       
     </tags>
     
