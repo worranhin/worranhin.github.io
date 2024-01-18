@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>Vscode-Cpp</title>
+    <link href="/2024/01/18/vscode-cpp/"/>
+    <url>/2024/01/18/vscode-cpp/</url>
+    
+    <content type="html"><![CDATA[<p>今天在实验室的新电脑上又遇到了 vscode 的 c&#x2F;c++ 没有类型提示的问题。记得之前也遇过几次这个问题，但不记得怎么解决了。搞了一上午，终于解决了，现在有必要记录一下，以免下次又遇到这个鬼问题。</p><p>一开始想到的就是<strong>重装</strong>，重装扩展，重装 vscode，再把 <code>.code</code> 文件删掉，把 <code>settings.json</code> 的目录也删掉，都还是解决不了问题。</p><p>搞了一圈，发现问题应该主要就是没有编译器环境。回到扩展页面看<a href="https://code.visualstudio.com/docs/cpp/config-msvc">这个 MSVC 的教程</a> ，按它说的装好了，却还是有问题。选也选不了。于是又试了试 <a href="https://code.visualstudio.com/docs/cpp/config-mingw">Mingw 的这个教程</a> ，这下终于正常了，正常地报错了，报的是头文件的错，说是 <code>#include errors detected. Please update your includePath.</code>，这个倒简单了，<a href="https://zhuanlan.zhihu.com/p/616798432">上网一搜</a>就知道去哪找 <code>includePath</code> 了。但更新完 <code>includePath</code> 后还是有点问题，<code>include</code> 了头文件，正文里的东西还是报错，但编译却没问题。于是打开 <code>configuration UI</code> 更改 <code>Compiler Path</code> 为 gcc 就好了。</p><p><img src="/2024/01/18/vscode-cpp/ScreenShot.jpg" alt="Compiler Path 截图"></p><p>说起来这么简单的东西竟然搞了这么久，难受。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>工具</tag>
+      
+      <tag>vscode</tag>
+      
+      <tag>cpp</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>实用小工具</title>
     <link href="/2023/09/22/newPC/"/>
     <url>/2023/09/22/newPC/</url>
@@ -137,11 +160,11 @@
   
   
   <entry>
-    <title>碎屏手机的数据迁移</title>
-    <link href="/2023/03/12/broken-screen/"/>
-    <url>/2023/03/12/broken-screen/</url>
+    <title>Jekyll 中改变图片尺寸</title>
+    <link href="/2023/03/12/resize-image/"/>
+    <url>/2023/03/12/resize-image/</url>
     
-    <content type="html"><![CDATA[<p>最近发生一件令人心碎的事情，我妈妈的手机屏幕碎掉了！！（嗯……心碎好像有点夸张了，但反正不是好事。）</p><img src="/2023/03/12/broken-screen/broken-screen.jpg" class="" width="200" height="300"><p>屏幕的问题好解决，换手机就可以。但是数据需要迁移到新手机。迁移数据可以使用手机常用的迁移助手。但这时问题来了，使用迁移助手需要在旧手机上操作，但屏幕的触控已经坏了，该怎么操作呢？</p><p>这时当然需要在互联网上寻求解决方案，而一个 <a href="https://www.bilibili.com/video/BV16Y411a7zC/?share_source=copy_web&vd_source=2feca964be8cfa9b36e6a01530ba1e60">B 站的视频</a>给了我灵感。既然屏幕按不了，那可以接<strong>鼠标</strong>操作呀！</p><p>就这样借助鼠标再通过一些技巧，成功地在旧手机上下载迁移助手并完成数据迁移。</p><blockquote><p>如果实在半个屏幕摸不到，可以借助手机自带的<strong>无障碍模式</strong>进行辅助。</p></blockquote><h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>现在的数据真是非常的重要，平时一定要做好备份哪！</p>]]></content>
+    <content type="html"><![CDATA[<p>在写博客时有时因为图片太大，想要改变图片的大小，但是又不想嵌入 <em>html</em>。于是上网查了一下，很快啊，就有解决方法了。</p><span id="more"></span><p><a href="https://www.seanosier.com/2021/03/19/resize-images-in-jekyll-markdown/#:~:text=To%20resize%20an%20image%20in%20Jekyll%20Markdown%20without,Go%20in%20the%20Curly%20Braces%2C%20After%20the%20%3A">这篇文章</a>说到，只要在图片后添加 <code>&#123;:&#125;</code> 即可。示例如下：</p><div class="code-wrapper"><pre><code class="hljs arduino">![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;50%&quot;</span>&#125;![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;100px&quot;</span> height=<span class="hljs-string">&quot;200px&quot;</span>&#125;</code></pre></div><hr><blockquote><p>2023-04-08 更新</p></blockquote><p>Hexo 不支持这个语法，我的天哪！🥹</p>]]></content>
     
     
     
@@ -150,11 +173,11 @@
   
   
   <entry>
-    <title>Jekyll 中改变图片尺寸</title>
-    <link href="/2023/03/12/resize-image/"/>
-    <url>/2023/03/12/resize-image/</url>
+    <title>碎屏手机的数据迁移</title>
+    <link href="/2023/03/12/broken-screen/"/>
+    <url>/2023/03/12/broken-screen/</url>
     
-    <content type="html"><![CDATA[<p>在写博客时有时因为图片太大，想要改变图片的大小，但是又不想嵌入 <em>html</em>。于是上网查了一下，很快啊，就有解决方法了。</p><span id="more"></span><p><a href="https://www.seanosier.com/2021/03/19/resize-images-in-jekyll-markdown/#:~:text=To%20resize%20an%20image%20in%20Jekyll%20Markdown%20without,Go%20in%20the%20Curly%20Braces%2C%20After%20the%20%3A">这篇文章</a>说到，只要在图片后添加 <code>&#123;:&#125;</code> 即可。示例如下：</p><div class="code-wrapper"><pre><code class="hljs arduino">![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;50%&quot;</span>&#125;![image](path/to/image.png)&#123;:width=<span class="hljs-string">&quot;100px&quot;</span> height=<span class="hljs-string">&quot;200px&quot;</span>&#125;</code></pre></div><hr><blockquote><p>2023-04-08 更新</p></blockquote><p>Hexo 不支持这个语法，我的天哪！🥹</p>]]></content>
+    <content type="html"><![CDATA[<p>最近发生一件令人心碎的事情，我妈妈的手机屏幕碎掉了！！（嗯……心碎好像有点夸张了，但反正不是好事。）</p><img src="/2023/03/12/broken-screen/broken-screen.jpg" class="" width="200" height="300"><p>屏幕的问题好解决，换手机就可以。但是数据需要迁移到新手机。迁移数据可以使用手机常用的迁移助手。但这时问题来了，使用迁移助手需要在旧手机上操作，但屏幕的触控已经坏了，该怎么操作呢？</p><p>这时当然需要在互联网上寻求解决方案，而一个 <a href="https://www.bilibili.com/video/BV16Y411a7zC/?share_source=copy_web&vd_source=2feca964be8cfa9b36e6a01530ba1e60">B 站的视频</a>给了我灵感。既然屏幕按不了，那可以接<strong>鼠标</strong>操作呀！</p><p>就这样借助鼠标再通过一些技巧，成功地在旧手机上下载迁移助手并完成数据迁移。</p><blockquote><p>如果实在半个屏幕摸不到，可以借助手机自带的<strong>无障碍模式</strong>进行辅助。</p></blockquote><h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>现在的数据真是非常的重要，平时一定要做好备份哪！</p>]]></content>
     
     
     

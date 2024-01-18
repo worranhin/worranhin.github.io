@@ -16,22 +16,26 @@
   <meta name="author" content="Hin">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="晚风从我身边吹过，在我身上的毛发间穿梭，拨弄着与其相连的神经。与此同时，风还携带着一丝柔和的寒意，刺激着皮肤上的温度传感器。它并非寒冬那种令人发颤的寒风，亦非春日那种潮湿黏糊的回南风，更不是夏天那种携带着暑气的热风，而是秋天的干爽的能带走疲倦与烦恼的快哉风。 它的一次次穿行活化了我的感官。因他，我的心情变得愉悦，大脑变得清醒，思维变得活跃。让人想一动不动地躺在一望无际的旷野，让她在我的身上轻拢">
+    <meta name="description" content="今天在实验室的新电脑上又遇到了 vscode 的 c&#x2F;c++ 没有类型提示的问题。记得之前也遇过几次这个问题，但不记得怎么解决了。搞了一上午，终于解决了，现在有必要记录一下，以免下次又遇到这个鬼问题。 一开始想到的就是重装，重装扩展，重装 vscode，再把 .code 文件删掉，把 settings.json 的目录也删掉，都还是解决不了问题。 搞了一圈，发现问题应该主要就是没有编译器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="吹风有感">
-<meta property="og:url" content="https://worranhin.github.io/2021/10/11/wind/index.html">
+<meta property="og:title" content="Vscode-Cpp">
+<meta property="og:url" content="https://worranhin.github.io/2024/01/18/vscode-cpp/index.html">
 <meta property="og:site_name" content="Hin&#39;s 灵质空间">
-<meta property="og:description" content="晚风从我身边吹过，在我身上的毛发间穿梭，拨弄着与其相连的神经。与此同时，风还携带着一丝柔和的寒意，刺激着皮肤上的温度传感器。它并非寒冬那种令人发颤的寒风，亦非春日那种潮湿黏糊的回南风，更不是夏天那种携带着暑气的热风，而是秋天的干爽的能带走疲倦与烦恼的快哉风。 它的一次次穿行活化了我的感官。因他，我的心情变得愉悦，大脑变得清醒，思维变得活跃。让人想一动不动地躺在一望无际的旷野，让她在我的身上轻拢">
+<meta property="og:description" content="今天在实验室的新电脑上又遇到了 vscode 的 c&#x2F;c++ 没有类型提示的问题。记得之前也遇过几次这个问题，但不记得怎么解决了。搞了一上午，终于解决了，现在有必要记录一下，以免下次又遇到这个鬼问题。 一开始想到的就是重装，重装扩展，重装 vscode，再把 .code 文件删掉，把 settings.json 的目录也删掉，都还是解决不了问题。 搞了一圈，发现问题应该主要就是没有编译器">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-11T14:17:00.000Z">
-<meta property="article:modified_time" content="2024-01-18T06:45:13.489Z">
+<meta property="og:image" content="https://worranhin.github.io/2024/01/18/vscode-cpp/ScreenShot.jpg">
+<meta property="article:published_time" content="2024-01-18T06:24:08.000Z">
+<meta property="article:modified_time" content="2024-01-18T06:45:13.529Z">
 <meta property="article:author" content="Hin">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="vscode">
+<meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://worranhin.github.io/2024/01/18/vscode-cpp/ScreenShot.jpg">
   
   
   
-  <title>吹风有感 | Hin&#39;s 灵质空间</title>
+  <title>Vscode-Cpp | Hin&#39;s 灵质空间</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -185,7 +189,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="吹风有感"></span>
+            <span id="subtitle" data-typed-text="Vscode-Cpp"></span>
           
         </div>
 
@@ -196,8 +200,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-10-11 22:17" pubdate>
-          2021年10月11日 晚上
+        <time datetime="2024-01-18 14:24" pubdate>
+          2024年1月18日 下午
         </time>
       </span>
     
@@ -208,7 +212,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          270 字
+          279 字
         
       </span>
     
@@ -256,26 +260,17 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">吹风有感</h1>
+            <h1 id="seo-header">Vscode-Cpp</h1>
             
             
               <div class="markdown-body">
                 
-                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=376635&auto=0&height=66"></iframe>
+                <p>今天在实验室的新电脑上又遇到了 vscode 的 c&#x2F;c++ 没有类型提示的问题。记得之前也遇过几次这个问题，但不记得怎么解决了。搞了一上午，终于解决了，现在有必要记录一下，以免下次又遇到这个鬼问题。</p>
+<p>一开始想到的就是<strong>重装</strong>，重装扩展，重装 vscode，再把 <code>.code</code> 文件删掉，把 <code>settings.json</code> 的目录也删掉，都还是解决不了问题。</p>
+<p>搞了一圈，发现问题应该主要就是没有编译器环境。回到扩展页面看<a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/cpp/config-msvc">这个 MSVC 的教程</a> ，按它说的装好了，却还是有问题。选也选不了。于是又试了试 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/cpp/config-mingw">Mingw 的这个教程</a> ，这下终于正常了，正常地报错了，报的是头文件的错，说是 <code>#include errors detected. Please update your includePath.</code>，这个倒简单了，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/616798432">上网一搜</a>就知道去哪找 <code>includePath</code> 了。但更新完 <code>includePath</code> 后还是有点问题，<code>include</code> 了头文件，正文里的东西还是报错，但编译却没问题。于是打开 <code>configuration UI</code> 更改 <code>Compiler Path</code> 为 gcc 就好了。</p>
+<p><img src="/2024/01/18/vscode-cpp/ScreenShot.jpg" srcset="/img/loading.gif" lazyload alt="Compiler Path 截图"></p>
+<p>说起来这么简单的东西竟然搞了这么久，难受。</p>
 
-<p>晚风从我身边吹过，在我身上的毛发间穿梭，拨弄着与其相连的神经。<br>与此同时，风还携带着一丝柔和的寒意，刺激着皮肤上的温度传感器。它并非寒冬那种令人发颤的寒风，<br>亦非春日那种潮湿黏糊的回南风，更不是夏天那种携带着暑气的热风，而是秋天的干爽的能带走疲倦与烦恼的快哉风。</p>
-<p>它的一次次穿行活化了我的感官。<br>因他，我的心情变得愉悦，大脑变得清醒，思维变得活跃。让人想一动不动地躺在一望无际的旷野，<br>让她在我的身上轻拢慢捻抹复挑，让我动用全身的传感器去记录每一个令人愉悦的参数，去感受这沁心之风。</p>
-<p>也许一年之中只有这一天，但这就是我心中定义的最美的秋天。</p>
-<hr>
-<p class="footer">
-    2021年10月11日<br>中国广东省广州市天河区五山街华南理工大学<br>吹风有感
-</p>
-
-<style>
-    .footer{
-        text-align: end;
-    }
-</style>
                 
               </div>
             
@@ -283,6 +278,17 @@
             <div>
               <div class="post-metas my-3">
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B7%A5%E5%85%B7/" class="print-no-link">#工具</a>
+      
+        <a href="/tags/vscode/" class="print-no-link">#vscode</a>
+      
+        <a href="/tags/cpp/" class="print-no-link">#cpp</a>
+      
+    </div>
   
 </div>
 
@@ -292,8 +298,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>吹风有感</div>
-      <div>https://worranhin.github.io/2021/10/11/wind/</div>
+      <div>Vscode-Cpp</div>
+      <div>https://worranhin.github.io/2024/01/18/vscode-cpp/</div>
     </div>
     <div class="license-meta">
       
@@ -305,7 +311,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年10月11日</div>
+          <div>2024年1月18日</div>
         </div>
       
       
@@ -343,18 +349,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/14/photograph/" title="拍合照的新思路">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">拍合照的新思路</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/10/04/your-name/" title="看电影 | 你的名字">
-                        <span class="hidden-mobile">看电影 | 你的名字</span>
+                      <a href="/2023/09/22/newPC/" title="实用小工具">
+                        <span class="hidden-mobile">实用小工具</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
