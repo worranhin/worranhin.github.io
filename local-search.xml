@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>Cmake 找不到动态链接库</title>
+    <link href="/2024/09/14/cmake/"/>
+    <url>/2024/09/14/cmake/</url>
+    
+    <content type="html"><![CDATA[<p>近期在写实验程序时需要用到一个厂商给的 SDK，那么在 cmake 里应该就是添加一个 <code>IMPORTED</code> 的动态库，并且配置一些参数就可以了。</p><div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(NTSDK SHARED IMPORTED)<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES  IMPORTED_IMPLIB <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.lib&quot;</span>)<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES  IMPORTED_LOCATION <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.dll&quot;</span>)</code></pre></div><p>但奇怪的是这段代码在项目根目录中的 CmakeLists.txt 还可以正常生成，但是当我想要将它写入子文件夹后再用 <code>add_subdirectory</code> 添加嵌套的 <code>CmakeLists.txt</code> 后，编译时却发现找不到这个库了。</p><div class="code-wrapper"><pre><code class="hljs gradle">[build] some<span class="hljs-regexp">/path/</span>x86_64-w64-mingw32<span class="hljs-regexp">/bin/</span>ld.exe: cannot <span class="hljs-keyword">find</span> -lNTSDK: No such <span class="hljs-keyword">file</span> or directory</code></pre></div><p>反复试了几次还是不行，于是去翻看<a href="https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries">官方的文档</a>，发现调用实例后面还有个 <code>GLOBAL</code> 选项。仔细一看，这个选项的作用正是令 target name 全局可见！</p><blockquote><p>GLOBAL</p><p>   Make the target name globally visible.</p></blockquote><p>于是在子目录下的 <code>CmakeLists.txt</code> 中的 <code>add_library</code> 加入 <code>GLOBAL</code> 选项，就可以正常运行了。</p><div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(NTSDK SHARED IMPORTED)<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES  IMPORTED_IMPLIB <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.lib&quot;</span>)<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES  IMPORTED_LOCATION <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.dll&quot;</span>)</code></pre></div>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Vscode Serial Monitor 的显示失误</title>
     <link href="/2024/05/27/serial-monitor/"/>
     <url>/2024/05/27/serial-monitor/</url>
