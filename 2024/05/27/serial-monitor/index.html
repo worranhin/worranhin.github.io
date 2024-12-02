@@ -24,7 +24,7 @@
 <meta property="og:description" content="今天调试程序的时候遇见一个问题，就是在 Arduino 框架下写的 stm32 串口通讯程序不能发送 0x7f 以上的数值，这有点奇怪。代码如下： Serial.write(0xff);  &#x2F;&#x2F; （任何大于 0x7f 的数）输出结果为 fffd  这其实能看出来有点诡异，因为 0x7f 应该就是 ascii 码的最大值，不能输出比这大的数，感觉是遇到了一些奇怪的机制。在 Bing 中稍微搜索了一下">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-27T12:37:03.000Z">
-<meta property="article:modified_time" content="2024-11-30T05:25:34.508Z">
+<meta property="article:modified_time" content="2024-12-02T15:07:07.699Z">
 <meta property="article:author" content="Hin">
 <meta property="article:tag" content="嵌入式">
 <meta property="article:tag" content="AI">
