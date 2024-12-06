@@ -106,10 +106,231 @@ configASSERT( uxCriticalNesting == ~0UL );
 
 移植列表 (osal.c)  
 
-- [ ] void osal_timer_start(osal_timert * self, uint32 timeout_us);
-- [ ] boolean osal_timer_is_expired(osal_timert * self);
-- [ ] int osal_usleep(uint32 usec);
+- [x] void osal_timer_start(osal_timert * self, uint32 timeout_us);
+- [x] boolean osal_timer_is_expired(osal_timert * self);
+- [x] int osal_usleep(uint32 usec);
 - [x] ec_timet osal_current_time(void);
-- [ ] void osal_time_diff(ec_timet *start, ec_timet *end, ec_timet *diff);
-- [ ] int osal_thread_create(void *thandle, int stacksize, void *func, void *param);
-- [ ] int osal_thread_create_rt(void *thandle, int stacksize, void *func, void *param);
+- [x] void osal_time_diff(ec_timet *start, ec_timet *end, ec_timet *diff);
+- [x] int osal_thread_create(void *thandle, int stacksize, void *func, void *param);
+- [x] int osal_thread_create_rt(void *thandle, int stacksize, void *func, void *param);
+
+OK, osal.c 文件移植完成，接下来是 oshw 目录下的 nicdrv(NIC driver) 和 oshw(OS hardware)
+
+oshw.c: 
+- [x] uint16 oshw_htons(uint16 host);
+- [x] uint16 oshw_ntohs(uint16 network);
+- [x] ec_adaptert * oshw_find_adapters(void);
+- [x] void oshw_free_adapters(ec_adaptert * adapter);
+
+nicdrv.c:
+- [x] void ec_setupheader(void *p);
+- [x] int ecx_setupnic(ecx_portt *port, const char * ifname, int secondary);      	//网口初始化并打开
+- [x] int ecx_closenic(ecx_portt *port);                                           	//网口关闭
+- [x] void ecx_setbufstat(ecx_portt *port, int idx, int bufstat);                 	//设置idx号缓冲区状
+- [x] int ecx_getindex(ecx_portt *port);                                           	//获取空闲idx缓冲区号获取新的帧标识符索引并分配相应的缓冲区.
+- [x] int ecx_outframe(ecx_portt *port, int idx, int stacknumber);                	//发送数据
+- [x] （不实现）int ecx_outframe_red(ecx_portt *port, int idx);                             	//通过次口发送数据
+- [x] int ecx_waitinframe(ecx_portt *port, int idx, int timeout);                 	//等待idx号返回并接收 接收数据函数
+- [x] int ecx_srconfirm(ecx_portt *port, int idx,int timeout);                    	//发送idx 并等待接收数据的函数
+
+en... 偶然间看到这个：
+
+```c
+// ethercattype.h
+// ...
+
+/** define EC_VER1 if version 1 default context and functions are needed
+ * comment if application uses only ecx_ functions and own context */
+#define EC_VER1
+```
+
+以及这一段：
+
+```c
+// nicdrv.h
+// ...
+#ifdef EC_VER1
+extern ecx_portt     ecx_port;
+extern ecx_redportt  ecx_redport;
+
+int ec_setupnic(const char * ifname, int secondary);
+int ec_closenic(void);
+void ec_setbufstat(int idx, int bufstat);
+int ec_getindex(void);
+int ec_outframe(int idx, int stacknumber);
+int ec_outframe_red(int idx);
+int ec_waitinframe(int idx, int timeout);
+int ec_srconfirm(int idx,int timeout);
+#endif
+```
+
+那我果断注释掉，又可以少移植一部分。还有我发现其实这两个模块的代码貌似在主要模块 soem 中也不怎么用到，原来还以为是主模块依赖这两个模块，所以统一接口方便移植呢，现在看来，嗯......不太懂了
+
+## 硬件初始化问题
+
+在测试 ETH 模块时又遇到一个很奇怪的问题，就是下面这段代码，本应该是会 Start ETH 模块才对，但调试了几次，感觉它根本就没有进到这一步，
+而且是单步执行的时候，可以正常运行，但直接连续运行的时候就不行。
+
+```c
+void ETH_StartLink(void)
+{
+  ETH_MACConfigTypeDef MACConf = {0};
+  int32_t PHYLinkState = 0U;
+  uint32_t linkchanged = 0U, speed = 0U, duplex =0U;
+  PHYLinkState = LAN8720_GetLinkState(&lan8720);
+  if(PHYLinkState <= LAN8720_STATUS_LINK_DOWN)
+  {
+    HAL_ETH_Stop(&heth);
+  }
+  else if(PHYLinkState > LAN8720_STATUS_LINK_DOWN)
+  {
+    switch (PHYLinkState)
+    {
+    case LAN8720_STATUS_100MBITS_FULLDUPLEX:
+      duplex = ETH_FULLDUPLEX_MODE;
+      speed = ETH_SPEED_100M;
+      linkchanged = 1;
+      break;
+    case LAN8720_STATUS_100MBITS_HALFDUPLEX:
+      duplex = ETH_HALFDUPLEX_MODE;
+      speed = ETH_SPEED_100M;
+      linkchanged = 1;
+      break;
+    case LAN8720_STATUS_10MBITS_FULLDUPLEX:
+      duplex = ETH_FULLDUPLEX_MODE;
+      speed = ETH_SPEED_10M;
+      linkchanged = 1;
+      break;
+    case LAN8720_STATUS_10MBITS_HALFDUPLEX:
+      duplex = ETH_HALFDUPLEX_MODE;
+      speed = ETH_SPEED_10M;
+      linkchanged = 1;
+      break;
+    default:
+      break;
+    }
+    if(linkchanged)
+    {
+      HAL_ETH_GetMACConfig(&heth, &MACConf);
+      MACConf.DuplexMode = duplex;
+      MACConf.Speed = speed;
+      MACConf.DropTCPIPChecksumErrorPacket = DISABLE;
+      MACConf.ForwardRxUndersizedGoodPacket = ENABLE;
+      HAL_ETH_SetMACConfig(&heth, &MACConf);
+      HAL_ETH_Start_IT(&heth);
+      }
+  }
+}
+```
+
+这时我也想到是某个地方可能需要等待一下初始化之类的，但就是没找到。
+在数次尝试后，才想起来给 `PHYLinkState <= LAN8720_STATUS_LINK_DOWN` 这个判断里面打个断点。
+果然就是连续运行就会进到这一步，单步执行就会执行下面的正常的 Start 代码。
+那看来是 PHY 外设的初始化需要一点时间。那接下来就是看看 LAN8720 的数据手册看看能不能加点判断，或者加一个延时暴力解决吧。
+
+简单查找，发现 *PHY SPECIAL CONTROL/STATUS REGISTER* 寄存器中有这样一位：
+> Autodone: bit 12   
+> Auto-negotiation done indication:  
+> 0 = Auto-negotiation is not done or disabled (or not active)  
+> 1 = Auto-negotiation is done  
+
+那么就通过一个 while 循环判断这一位的值来确保 auto-negotiation 的完成吧：
+
+```c
+do {
+    pObj->IO.ReadReg(addr, LAN8720_PHYSCSR, &regvalue);
+} while((regvalue & LAN8720_PHYSCSR_AUTONEGO_DONE) != LAN8720_PHYSCSR_AUTONEGO_DONE); // 等待 auto-negotiation 完成
+```
+
+## 结合 FreeRTOS 与 ETH
+
+现在遇到一个很难搞的问题，一个 ETH 测试程序跑得好好的，但一加上 FreeRTOS 的模块就出问题了，不知道怎么搞啊。
+
+经过不断地观察，发现使用 LwIP 与 FreeRTOS 的示例里，`MX_LWIP_Init()` 这个初始化函数是在线程里面的，但是我的 ETH 测试程序里，`MX_ETH_Init()` 是在 main 函数里，
+os 初始化和开始之前的。于是试着将这个函数的调用移到 default 线程中......然后就可以了。但是，这到底是为什么呢？难道说 RTOS 的初始化和开始的过程会对 ETH 或者 DMA 模块有影响吗？
+还是说，是内存地址的原因呢。RTOS 确实是会对内存进行管理的。
+
+接着就还有一个问题，就是在 free 内存的时候会报错。
+
+```c
+void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef * heth)
+{
+	ETH_BufferTypeDef * pBuff;
+	HAL_StatusTypeDef status;
+	status = HAL_ETH_ReadData(heth, (void**)&pBuff);
+	if (status != HAL_OK) {
+		Error_Handler();
+	}
+	printf("Packet Received successfully!\r\n");
+	printf("Received length: %lu", pBuff->len);
+	fflush(0);
+	free(pBuff); // 就是这里有问题
+}
+```
+下面是对应的分配内存代码：
+
+```c
+void HAL_ETH_RxAllocateCallback(uint8_t ** buff) {
+ ETH_BufferTypeDef * p = malloc(100);
+ if (p)
+ {
+   * buff = (uint8_t * ) p + offsetof(ETH_AppBuff, buffer);
+   p -> next = NULL;
+   p -> len = 100;
+ } else {
+   * buff = NULL;
+ }
+}
+```
+
+这个问题的话，就试试用 RTOS 提供的内存管理处理一下吧。首先在线程中， ETH 初始化前初始化一个内存池子。
+
+```c
+rxBufferPool = osMemoryPoolNew(ETH_RXBUFNB, ETH_RX_BUF_SIZE, NULL);
+assert_param(rxBufferPool != NULL);
+```
+
+接着修改分配内存的代码：
+
+```c
+void HAL_ETH_RxAllocateCallback(uint8_t ** buff) {
+	ETH_AppBuff * pAppBuff = osMemoryPoolAlloc(rxBufferPool, 1000);  // 这里使用了 os 的线程安全内存分配方法
+	if (pAppBuff) {
+		ETH_BufferTypeDef * p = &(pAppBuff->AppBuff);
+		*buff = pAppBuff->buffer;
+		p->next = NULL;
+		p->len = 0;  // 初始大小设为 0
+		p->buffer = *buff; // buffer 指针指向实际 buff 位置
+	} else {
+		*buff = NULL;
+	}
+}
+```
+
+然后是接收到数据时的回调函数：
+
+```c
+void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef * heth)
+{
+	ETH_BufferTypeDef * pBuff;
+	HAL_StatusTypeDef status;
+	status = HAL_ETH_ReadData(heth, (void**)&pBuff);
+	if (status != HAL_OK) {
+		Error_Handler();
+	}
+	printf("Packet Received successfully!\r\n");
+	printf("Received length: %lu", pBuff->len);
+	osMemoryPoolFree(rxBufferPool, pBuff);  // 这边修改为使用 os 的释放方法
+	fflush(0);
+}
+```
+将开发板和电脑用网线连接，然后配置一下 IP, 就能使用 Wireshark 抓取到板子发送的 packet 了：
+
+![Wireshark 上接收到的数据](img1.png)
+
+![packet 的内容](img2.png)
+
+
+至此就成功应用了 FreeRTOS 并实现了 ETH 的基本功能。
+
+> 补充一下，为了测试是否真的可行
