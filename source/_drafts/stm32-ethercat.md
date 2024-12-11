@@ -334,3 +334,40 @@ void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef * heth)
 至此就成功应用了 FreeRTOS 并实现了 ETH 的基本功能。
 
 > 补充一下，为了测试是否真的可行
+
+## 使用 vscode 吧
+
+终于,我受不了那个鬼 CubeIDE 了，虽然大致还是功能齐全的，但是是不是就卡死要重启，而且更个新还更坏了，用不了了，真是垃圾 eclipse。于是果断改用 vscode，
+其实官方也已经有了个叫 STM32 VS Code Extension 的拓展，只要按照 user guide 上的做就能顺利迁移了。真是悔不当初啊。不过用这个插件有一个限制，就是它只有 st-link 的选项，
+如果用 J-Link 或其它下载器不知道能不能用。
+
+主要的操作就是把一些之前的 IDE 相关的文件删掉，一般只用保留 `Driver`, `Core`, `Middlewares`, `*.ioc`, `.mxproject` 这几个文件/目录就可以了。然后用 CubeMX 打开 .ioc 文件，
+IDE 那里选择 Cmake, 然后重新生成代码。在拓展里有一个 `import Cmake project` 的选项，使用它选择该目录，拓展就会生成一些 `.vscode` 的文件，这样就实现可以自动补全之类的功能啦！
+接着如果项目有一些自己添加的源文件和 include 的路径需要在 `CmakeLists.txt` 里面对应地添加。如下面这样：
+
+```cmake
+# 通过 file 命令匹配多个文件
+file(GLOB SOEM_SOURCES "Middlewares/Ethercat/osal/*.c" "Middlewares/Ethercat/oshw/*.c" "Middlewares/Ethercat/soem/*.c")
+# Add sources to executable
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    # Add user sources here
+    ${SOEM_SOURCES} # 添加匹配的文件
+    "Core/Src/oled.c" # 直接添加源文件
+    "Core/Src/key.c"
+    "Core/Src/lan8720.c"
+    "Core/Src/SV630N.c"
+)
+
+# Add include paths
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    # Add user defined include paths
+    "Middlewares/Ethercat/osal" # 添加包含路径
+    "Middlewares/Ethercat/oshw"
+    "Middlewares/Ethercat/soem"
+)
+```
+
+这样之后点击生成应该就可以开始 build 流程了。
+
+> 如果配置 Cmake 的时候提示缺少 Ninja 的话，需要再安装一个 [ninja build tool](https://github.com/ninja-build/ninja)  
+> 点击上面的链接，进入 [Release 页面](https://github.com/ninja-build/ninja/releases)，下载对应系统架构的版本，解压文件到一个目录，并把该目录添加进环境变量的 Path 里面（为安全着想，这个目录最好没有其它文件）
