@@ -1,6 +1,8 @@
 ---
 title: stm32-ethercat 主站开发日志
 tags: [嵌入式, STM32, EtherCAT]
+index_img: /2024/11/30/stm32-ethercat/banner.jpg
+banner_img: /2024/11/30/stm32-ethercat/banner.jpg
 ---
 
 在此姑且用流水账的形式记录一下用 STM32 开发 Ethercat 主站时遇到的重重困难。
@@ -129,7 +131,7 @@ nicdrv.c:
 - [x] void ecx_setbufstat(ecx_portt *port, int idx, int bufstat);                 	//设置idx号缓冲区状
 - [x] int ecx_getindex(ecx_portt *port);                                           	//获取空闲idx缓冲区号获取新的帧标识符索引并分配相应的缓冲区.
 - [x] int ecx_outframe(ecx_portt *port, int idx, int stacknumber);                	//发送数据
-- [x] （不实现）int ecx_outframe_red(ecx_portt *port, int idx);                             	//通过次口发送数据
+- [x] int ecx_outframe_red(ecx_portt *port, int idx);                             	//通过次口发送数据
 - [x] int ecx_waitinframe(ecx_portt *port, int idx, int timeout);                 	//等待idx号返回并接收 接收数据函数
 - [x] int ecx_srconfirm(ecx_portt *port, int idx,int timeout);                    	//发送idx 并等待接收数据的函数
 
@@ -333,9 +335,9 @@ void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef * heth)
 
 至此就成功应用了 FreeRTOS 并实现了 ETH 的基本功能。
 
-> 补充一下，为了测试是否真的可行
+## 成为 Vscode 少女吧
 
-## 使用 vscode 吧
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=590252&auto=1&height=66"></iframe>
 
 终于,我受不了那个鬼 CubeIDE 了，虽然大致还是功能齐全的，但是是不是就卡死要重启，而且更个新还更坏了，用不了了，真是垃圾 eclipse。于是果断改用 vscode，
 其实官方也已经有了个叫 STM32 VS Code Extension 的拓展，只要按照 user guide 上的做就能顺利迁移了。真是悔不当初啊。不过用这个插件有一个限制，就是它只有 st-link 的选项，
@@ -371,3 +373,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 > 如果配置 Cmake 的时候提示缺少 Ninja 的话，需要再安装一个 [ninja build tool](https://github.com/ninja-build/ninja)  
 > 点击上面的链接，进入 [Release 页面](https://github.com/ninja-build/ninja/releases)，下载对应系统架构的版本，解压文件到一个目录，并把该目录添加进环境变量的 Path 里面（为安全着想，这个目录最好没有其它文件）
+
+build 完之后，在侧边栏找到运行与调试，选择 `Build & Debug...`，然后点开始调试，就会开始下载程序并调试了（记得把线连上）。如果它提示需要更新 st-link firmware 那就在扩展里点相应的选项即可。如果报错，那就在命令行敲 `stlinkupgrade`（记得把线连上）。
+
+接着就可以在 vscode 里愉快地敲代码啦。
