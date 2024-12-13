@@ -400,3 +400,38 @@ ETH_AppBuff* appBuff = osMemoryPoolAlloc(rxMemoryPool, 1000);
 上网找了一圈也都试过各种方法都不太行。不知道要怎么办了。
 
 ![EE09.3 的错误详细信息](img3.png)
+
+在网上寻找的时候发现 SOEM Github 上的[一个issue](https://github.com/OpenEtherCATsociety/SOEM/issues/487#issuecomment-786245585)，他说可以检查一下 Register System Time Difference (0x092C:0x092F)，它的值最好是小于 1ms，若满足要求则可以开始 sync0/1 信号的生成。
+
+> The best way to make sure all slave clocks are locked in is to measure the internal closed loop parameters. Register System Time Difference (0x092C:0x092F) is the obvious one to test. When it's value drops below one microsecond and stays below it then you have reached reasonable synchronization. It is the task of the application programmer (and not SOEM) to monitor this for all slaves. Only when this constraint is satisfied try to start the sync0/1 generation.
+
+有可能要在
+
+>  Keep in mind that some slaves will take up to 10 seconds or more to measure. Forcing safe-OP to OP before that will cause the slave to fail.
+
+接着提出 issue 的人指出可以尝试在 config mapping 之前配置 DC clock，但我的代码就是这样的呀。
+
+> Thank you so much Arthur. Finally after reading your message and many old issues as well I realized that it's better to configure de DC clock before mapping the slaves (in Pre-OP). I was first mapping the slaves and then configuring the DC clock (I think that I took it from an example). So right now the slaves go to OP without no error at the first attempt!
+
+> The thing is when you call ec_dcsync0() before ec_configdc() that the latter will overwrite the slave reference clock. If the first sync0 did not trigger before that then it most likely will not trigger for a long time. The reason is that the first sync0 will fire at an absolute time (64bit). So make sure this absolute time is always a bit in the future.
+
+在[另一篇 issue](https://github.com/OpenEtherCATsociety/SOEM/issues/520) 中，开发者说明了可能需要在 safe-op 状态下跑一段时间，确认了满足条件后再请求进入 OP 状态，以让驱动器有足够的时间确认 DC 时钟。
+
+> The correct timing to start sync0 generation is AFTER slave AND master clock synchronization, but BEFORE going to OP. And, to be sure the slave has time to validate proper master and sync0 timing, wait a few seconds before going to OP. ec_configdc() should be called at pre-OP. Then run the 10.000 cycles, then sync the master clock. There are a few weird slaves out there that require to set-up sync0 on the transition from pre-OP to safe-OP. This is violating the EtherCAT protocol specification but what can you do? It is like "I was programmed without understanding the standards and only tested with TwinCAT and now I am confused and going to crash".
+
+然后下面是 issue 作者整理的一份执行顺序
+
+Okay so the order should be:
+
+1. Call ec_config_init() to move from INIT to PRE-OP state.
+2. Do slave-specific configurations via SDO communication
+3. Set ecx_context.manualstatechange = 1. Map PDOs for all slaves by calling ec_config_map().
+4. Call ec_configdc() in PRE-OP state
+5. Manually call the transition to SAFE-OP (some slaves require starting sync0 here, but this is a violation of the EtherCAT protocol spec so it is not the default)
+6. Do 10,000 process data cycles in SAFE-OP state
+7. Synchronise the slave and master clock by setting the master clock = slave reference clock
+8. Call ec_dcsync0() for the reference clock slave
+9. Wait for a few seconds
+10. Transition to OP state
+
+我觉得可以先试试
