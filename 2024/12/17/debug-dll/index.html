@@ -16,22 +16,25 @@
   <meta name="author" content="Hin">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="🎉网站已经成功在 github pages 上部署啦！">
+    <meta name="description" content="现需要调试 dll, 遂在 visual studio 中设置 c++ dll 的断点，然警告称没有加载符号，故上网查找，发现一微软文档和一 stackoverflow 帖子，总结步骤如下：  右击 C++ DLL project, 选择属性 -&gt; 链接器 -&gt; 调试 -&gt; 可调试程序集 -&gt; Yes  右击 C# 项目，选择属性 -&gt; 调试 -&gt; 打开调试启动">
 <meta property="og:type" content="article">
-<meta property="og:title" content="部署成功">
-<meta property="og:url" content="https://worranhin.github.io/2021/09/29/deploy-successfully/index.html">
+<meta property="og:title" content="在 C# 中 Debug C++ Dll">
+<meta property="og:url" content="https://worranhin.github.io/2024/12/17/debug-dll/index.html">
 <meta property="og:site_name" content="Hin&#39;s 灵质空间">
-<meta property="og:description" content="🎉网站已经成功在 github pages 上部署啦！">
+<meta property="og:description" content="现需要调试 dll, 遂在 visual studio 中设置 c++ dll 的断点，然警告称没有加载符号，故上网查找，发现一微软文档和一 stackoverflow 帖子，总结步骤如下：  右击 C++ DLL project, 选择属性 -&gt; 链接器 -&gt; 调试 -&gt; 可调试程序集 -&gt; Yes  右击 C# 项目，选择属性 -&gt; 调试 -&gt; 打开调试启动">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-29T02:13:23.000Z">
-<meta property="article:modified_time" content="2024-12-17T14:17:19.620Z">
+<meta property="article:published_time" content="2024-12-17T13:57:39.000Z">
+<meta property="article:modified_time" content="2024-12-17T14:17:19.700Z">
 <meta property="article:author" content="Hin">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="cpp">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="DLL">
+<meta property="article:tag" content="Visual Studio">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>部署成功 | Hin&#39;s 灵质空间</title>
+  <title>在 C# 中 Debug C++ Dll | Hin&#39;s 灵质空间</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="部署成功"></span>
+            <span id="subtitle" data-typed-text="在 C# 中 Debug C++ Dll"></span>
           
         </div>
 
@@ -209,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-09-29 10:13" pubdate>
-          2021年9月29日 上午
+        <time datetime="2024-12-17 21:57" pubdate>
+          2024年12月17日 晚上
         </time>
       </span>
     
@@ -221,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11 字
+          99 字
         
       </span>
     
@@ -269,12 +272,17 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">部署成功</h1>
+            <h1 id="seo-header">在 C# 中 Debug C++ Dll</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="🎉"><a href="#🎉" class="headerlink" title="🎉"></a>🎉</h1><p>网站已经成功在 github pages 上部署啦！</p>
+                <p>现需要调试 dll, 遂在 visual studio 中设置 c++ dll 的断点，然警告称没有加载符号，故上网查找，发现<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/debugger/debugging-dll-projects?view=vs-2022">一微软文档</a>和<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1062910/debug-c-dll-in-c-sharp">一 stackoverflow 帖子</a>，总结步骤如下：</p>
+<ol>
+<li>右击 C++ DLL project, 选择属性 -&gt; 链接器 -&gt; 调试 -&gt; 可调试程序集 -&gt; Yes </li>
+<li>右击 C# 项目，选择属性 -&gt; 调试 -&gt; 打开调试启动配置文件 UI -&gt; 勾选<code>启用本机代码调试</code></li>
+</ol>
+<p>这样就可以了喵。</p>
 
                 
               </div>
@@ -284,6 +292,19 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/cpp/" class="print-no-link">#cpp</a>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+        <a href="/tags/DLL/" class="print-no-link">#DLL</a>
+      
+        <a href="/tags/Visual-Studio/" class="print-no-link">#Visual Studio</a>
+      
+    </div>
+  
 </div>
 
 
@@ -292,8 +313,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>部署成功</div>
-      <div>https://worranhin.github.io/2021/09/29/deploy-successfully/</div>
+      <div>在 C# 中 Debug C++ Dll</div>
+      <div>https://worranhin.github.io/2024/12/17/debug-dll/</div>
     </div>
     <div class="license-meta">
       
@@ -305,7 +326,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年9月29日</div>
+          <div>2024年12月17日</div>
         </div>
       
       
@@ -343,18 +364,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/09/29/change-name/" title="站名予定">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">站名予定</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/09/29/my-first-try/" title="开站大吉">
-                        <span class="hidden-mobile">开站大吉</span>
+                      <a href="/2024/10/17/pip-conda/" title="Pip Install Gymnasium[box2d] 失败">
+                        <span class="hidden-mobile">Pip Install Gymnasium[box2d] 失败</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

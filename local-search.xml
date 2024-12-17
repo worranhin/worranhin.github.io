@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>在 C# 中 Debug C++ Dll</title>
+    <link href="/2024/12/17/debug-dll/"/>
+    <url>/2024/12/17/debug-dll/</url>
+    
+    <content type="html"><![CDATA[<p>现需要调试 dll, 遂在 visual studio 中设置 c++ dll 的断点，然警告称没有加载符号，故上网查找，发现<a href="https://learn.microsoft.com/en-us/visualstudio/debugger/debugging-dll-projects?view=vs-2022">一微软文档</a>和<a href="https://stackoverflow.com/questions/1062910/debug-c-dll-in-c-sharp">一 stackoverflow 帖子</a>，总结步骤如下：</p><ol><li>右击 C++ DLL project, 选择属性 -&gt; 链接器 -&gt; 调试 -&gt; 可调试程序集 -&gt; Yes </li><li>右击 C# 项目，选择属性 -&gt; 调试 -&gt; 打开调试启动配置文件 UI -&gt; 勾选<code>启用本机代码调试</code></li></ol><p>这样就可以了喵。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>cpp</tag>
+      
+      <tag>C#</tag>
+      
+      <tag>DLL</tag>
+      
+      <tag>Visual Studio</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Pip Install Gymnasium[box2d] 失败</title>
     <link href="/2024/10/17/pip-conda/"/>
     <url>/2024/10/17/pip-conda/</url>
