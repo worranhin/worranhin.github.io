@@ -1,0 +1,1 @@
+﻿hexo.extend.injector.register('body_end', '<script src="https://fastly.jsdelivr.net/npm/live2d-widgets@0/autoload.js"></script>', 'default');
