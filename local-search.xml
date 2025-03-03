@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>评论功能，开！</title>
+    <link href="/2025/03/03/comment-on/"/>
+    <url>/2025/03/03/comment-on/</url>
+    
+    <content type="html"><![CDATA[<p>借助 <a href="https://waline.js.org/">waline</a> 的力量，本站的评论功能盛大开幕！</p><p>开启的流程很顺畅，waline 的教程很详尽。总之就是注册了个 LeanCloud 国际版，使用免费的开发版 API，再通过 Vercel 部署 Serverless 服务，就可以啦。</p><p>同时因为 Fluid 内置有这个功能，只要再配置文件上配一配就好了，文档上都有。然后反正都用上 LeanCloud 了，顺便也把浏览量计数 (PV, UV) 给开了。</p><blockquote><p>这下知道到底有没有人看我写的东西了</p></blockquote>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>局域网设备访问 V2rayN 代理</title>
     <link href="/2025/02/26/v2rayn/"/>
     <url>/2025/02/26/v2rayn/</url>
