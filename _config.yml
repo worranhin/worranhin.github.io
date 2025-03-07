@@ -45,6 +45,7 @@ post_asset_folder: true
 marked:
   prependRoot: true  # 让 markdown 语法可以找到图片等资源的正确位置，详见 https://hexo.io/zh-cn/docs/asset-folders
   postAsset: true
+  breaks: false
 relative_link: false
 future: false  # 显示未来文章
 highlight:
