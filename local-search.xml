@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>在微信部署 AI 助手 [未完成]</title>
+    <link href="/2025/03/20/chatgpt-on-wechat/"/>
+    <url>/2025/03/20/chatgpt-on-wechat/</url>
+    
+    <content type="html"><![CDATA[<p>最近看到一个在微信里使用 chatgpt 的<a href="https://github.com/zhayujie/chatgpt-on-wechat">Github 开源项目</a>，于是想试一试。</p><p>首先是先按照文档中快速开始的流程过了一遍，发现现在微信已经不支持个人微信搞这个了，只能用公众号或企业号那些整这个。</p><p>于是想着来都来了，就整个公众号玩玩吧。就注册了个公众号。结果发现在公众号上跑，需要有个服务器。这可怎么办呢。本着能白嫖就不花钱的原则，找了一圈，发现微软的 Azure 有个学生认证，可以在一年内使用 100 美元的额度。那么我立即认证，折腾了一下，就得到了一个低配 Ubuntu 虚拟机了。</p><p>接下来就是欢喜地在服务器上装个环境，然后开跑快速开始。结果在微信公众号平台填写服务器配置的时候出了问题，不管怎样，它都弹出“参数错误，请重新填写”的错误。于是去网上搜索了一番，看到这个<a href="https://developers.weixin.qq.com/community/develop/doc/000402c01cc7a0f7d1f9c7fd651800">帖子</a>，下面有人说可以在微信打开域名检查一下是否出现已停止访问该页面的警告。那么我快速尝试后发现，还真是。那就是说白嫖的服务器 ip 被微信屏蔽了咯。真是可恶啊，还整得挺安全的。那后面只能看看能不能申诉一下了。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MuJoCo 踩坑日志</title>
     <link href="/2025/03/04/mujoco/"/>
     <url>/2025/03/04/mujoco/</url>
