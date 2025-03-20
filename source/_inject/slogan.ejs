@@ -1,7 +1,8 @@
 ﻿<% if (is_home()) { %>
   <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script>
-      const texts = '<%= theme.index.slogan.texts %>'.split(',');
+      const texts = <%- JSON.stringify(theme.index.slogan.texts) %>
+      //const texts = '<%= theme.index.slogan.texts %>'.split(',');
       const randIdx = Math.floor(Math.random() * texts.length)
       const randText = texts[randIdx]
       var typed = new Typed('#subtitle', {
