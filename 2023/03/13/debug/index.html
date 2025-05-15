@@ -24,7 +24,7 @@
 <meta property="og:description" content="今天下午啊，在帮老陈同学调试它的小屏幕程序代码。有段程序他在调试时可以运行，但直接编译下载到板子上就不能运行。通过控制变量法，我们可以知道应该是调试程序和编译程序存在某些不同。再看问题代码，是一段等待硬件响应的空循环。看到这里，我忍不住地向空循环中加了句 delay 延时。果然，加了后就能跑了。这时不禁联想到之前微机课设时看到的编译器用户手册中说道，对于一些奇怪的代码，编译器是会进行优化的。于是，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-16T13:18:09.946Z">
+<meta property="article:modified_time" content="2025-05-15T02:34:19.684Z">
 <meta property="article:author" content="Hin">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
@@ -396,8 +396,8 @@ BNE WHILE_LOOP</code></pre></div>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/12/broken-screen/" title="碎屏手机的数据迁移">
-                        <span class="hidden-mobile">碎屏手机的数据迁移</span>
+                      <a href="/2023/03/12/resize-image/" title="Jekyll 中改变图片尺寸">
+                        <span class="hidden-mobile">Jekyll 中改变图片尺寸</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -708,20 +708,5 @@ BNE WHILE_LOOP</code></pre></div>
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
