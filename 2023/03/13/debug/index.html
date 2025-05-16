@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-touch-icon.png">
   <link rel="icon" href="/assets/favicon-32x32.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -24,7 +27,7 @@
 <meta property="og:description" content="今天下午啊，在帮老陈同学调试它的小屏幕程序代码。有段程序他在调试时可以运行，但直接编译下载到板子上就不能运行。通过控制变量法，我们可以知道应该是调试程序和编译程序存在某些不同。再看问题代码，是一段等待硬件响应的空循环。看到这里，我忍不住地向空循环中加了句 delay 延时。果然，加了后就能跑了。这时不禁联想到之前微机课设时看到的编译器用户手册中说道，对于一些奇怪的代码，编译器是会进行优化的。于是，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-05-15T02:43:06.198Z">
+<meta property="article:modified_time" content="2025-05-16T07:37:42.945Z">
 <meta property="article:author" content="Hin">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
@@ -48,7 +51,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -69,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"worranhin.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"0u2TP7o3z1tjjmNcUpRYFYff-MdYXbMMI","app_key":"6p7g6y54gThc1xpzjIEYhYzE","server_url":null,"path":"window.location.pathname","ignore_local":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"worranhin.github.io","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"0u2TP7o3z1tjjmNcUpRYFYff-MdYXbMMI","app_key":"6p7g6y54gThc1xpzjIEYhYzE","server_url":null,"path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -78,8 +81,6 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-  
-
   
 
   
@@ -361,13 +362,13 @@ BNE WHILE_LOOP</code></pre></div>
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                    <i class="iconfont icon-sa"></i>
+                    <i class="iconfont icon-cc-sa"></i>
                   </span>
                 </a>
               
@@ -396,8 +397,8 @@ BNE WHILE_LOOP</code></pre></div>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/12/broken-screen/" title="碎屏手机的数据迁移">
-                        <span class="hidden-mobile">碎屏手机的数据迁移</span>
+                      <a href="/2023/03/12/resize-image/" title="Jekyll 中改变图片尺寸">
+                        <span class="hidden-mobile">Jekyll 中改变图片尺寸</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -415,8 +416,8 @@ BNE WHILE_LOOP</code></pre></div>
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
-      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
         var options = Object.assign(
           {"serverURL":"https://waline-for-my-blog-delta.vercel.app/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":[],"lang":"zh-CN","emoji":["https://unpkg.com/@waline/emojis@1.2.0/bmoji","https://unpkg.com/@waline/emojis@1.2.0/bilibili"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10},
           {
@@ -558,9 +559,9 @@ BNE WHILE_LOOP</code></pre></div>
     
 
   
+
 </div>
 
-  
   
   
 </div>
