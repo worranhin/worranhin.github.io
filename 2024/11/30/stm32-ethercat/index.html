@@ -1,0 +1,1038 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="/assets/favicon-32x32.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hin">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="在此姑且用流水账的形式记录一下用 STM32 开发 Ethercat 主站时遇到的重重困难。 开发板硬件配置开发板使用的是 STM32F407ZGT6. 网络模块 ETH买的开发板的使用了 25MHz 的无源晶振作为 LAN8720A 的时钟输入，将 REF_CLK 配置为 Out Mode，即 REF_CLK 引脚为 50MHz 时钟的输出，将该引脚接到 STM32 上的对应引脚上即可同步二者的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stm32-Ethercat 主站开发日志">
+<meta property="og:url" content="https://worranhin.github.io/2024/11/30/stm32-ethercat/index.html">
+<meta property="og:site_name" content="Hin&#39;s 灵质空间">
+<meta property="og:description" content="在此姑且用流水账的形式记录一下用 STM32 开发 Ethercat 主站时遇到的重重困难。 开发板硬件配置开发板使用的是 STM32F407ZGT6. 网络模块 ETH买的开发板的使用了 25MHz 的无源晶振作为 LAN8720A 的时钟输入，将 REF_CLK 配置为 Out Mode，即 REF_CLK 引脚为 50MHz 时钟的输出，将该引脚接到 STM32 上的对应引脚上即可同步二者的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://worranhin.github.io/2024/11/30/stm32-ethercat/banner.jpg">
+<meta property="article:published_time" content="2024-11-30T14:35:19.000Z">
+<meta property="article:modified_time" content="2025-05-23T14:49:30.282Z">
+<meta property="article:author" content="Hin">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="EtherCAT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://worranhin.github.io/2024/11/30/stm32-ethercat/banner.jpg">
+  
+  
+  
+  <title>Stm32-Ethercat 主站开发日志 | Hin&#39;s 灵质空间</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"worranhin.github.io","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"0u2TP7o3z1tjjmNcUpRYFYff-MdYXbMMI","app_key":"6p7g6y54gThc1xpzjIEYhYzE","server_url":null,"path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hin's 灵质空间" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Hin&#39;s 灵质空间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml" target="_self">
+                <i class="iconfont icon-rss-fill"></i>
+                <span>feed</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/2024/11/30/stm32-ethercat/banner.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Stm32-Ethercat 主站开发日志</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-30 22:35" pubdate>
+          2024年11月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Stm32-Ethercat 主站开发日志</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在此姑且用流水账的形式记录一下用 STM32 开发 Ethercat 主站时遇到的重重困难。</p>
+<h2 id="开发板硬件配置"><a href="#开发板硬件配置" class="headerlink" title="开发板硬件配置"></a>开发板硬件配置</h2><p>开发板使用的是 STM32F407ZGT6.</p>
+<h3 id="网络模块-ETH"><a href="#网络模块-ETH" class="headerlink" title="网络模块 ETH"></a>网络模块 ETH</h3><p>买的开发板的使用了 25MHz 的无源晶振作为 LAN8720A 的时钟输入，将 REF_CLK 配置为 Out Mode，即 REF_CLK 引脚为 50MHz 时钟的输出，将该引脚接到 STM32 上的对应引脚上即可同步二者的时钟。</p>
+<h2 id="电脑网络配置"><a href="#电脑网络配置" class="headerlink" title="电脑网络配置"></a>电脑网络配置</h2><p>在调试 LwIP 时使用电脑直接插网线到开发板上，开发板上加载了示例的 tcp_echo_server 程序，也就是开发板作为 tcp 协议的服务器，但是电脑的调试工具一直连不上，感到很奇怪。在不断检查代码然无果后，突然想到改一下电脑网卡的 IP 试试，改了之后果然就可以了。这可能是因为电脑用的是工位的固定 IP 地址，也不知道是不是这个原因。还是要再补充一点计算机网络的知识啊。</p>
+<blockquote>
+<p>在这里顺便安利一下在微软应用商店找到的一个网络调试工具，叫做 TCPUDP网络调试助手，界面是用 WinUI3 编写的，非常现代简洁好看，很符合我的 xp</p>
+</blockquote>
+<h2 id="应用-FreeRTOS"><a href="#应用-FreeRTOS" class="headerlink" title="应用 FreeRTOS"></a>应用 FreeRTOS</h2><p>在成功用电脑 ping 通板子后，开始学习 FreeRTOS 的使用，首先是在 CubeMX 中启动，并且在 SYS 中设置 Timebase, 这里就设为基本定时器 TIM6 吧，接着按照提示在 FreeRTOS 的 Advanced Settings 选项将 USE_NEWLIB_REENTRANT 设为 Enable, 
+因为这个应用应该比较简单，所以暂时就将 Memory Management scheme 设置为 <code>heap_1</code>, 即内存一旦分配就不再解除的模式。然后看了看芯片数据手册，是支持 FPU 的，所以把 <code>ENABLE_FPU</code> 也设置上。那差不多就可以保存一下，生成代码了。</p>
+<blockquote>
+<p>在生成代码后记得改一下 ethernetif.c, 因为开发板用的不是 lan8742 而是 lan8720</p>
+</blockquote>
+<p>在用 FreeRTOS 时遇到一个问题，程序会停在这个地方：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-comment">/* Look up the interrupt&#x27;s priority. */</span>
+ucCurrentPriority = pcInterruptPriorityRegisters[ ulCurrentInterrupt ];
+
+<span class="hljs-comment">/* The following assertion will fail if a service routine (ISR) for</span>
+<span class="hljs-comment">an interrupt that has been assigned a priority above</span>
+<span class="hljs-comment">configMAX_SYSCALL_INTERRUPT_PRIORITY calls an ISR safe FreeRTOS API</span>
+<span class="hljs-comment">function.  ISR safe FreeRTOS API functions must *only* be called</span>
+<span class="hljs-comment">from interrupts that have been assigned a priority at or below</span>
+<span class="hljs-comment">configMAX_SYSCALL_INTERRUPT_PRIORITY.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Numerically low interrupt priority numbers represent logically high</span>
+<span class="hljs-comment">interrupt priorities, therefore the priority of the interrupt must</span>
+<span class="hljs-comment">be set to a value equal to or numerically *higher* than</span>
+<span class="hljs-comment">configMAX_SYSCALL_INTERRUPT_PRIORITY.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Interrupts that	use the FreeRTOS API must not be left at their</span>
+<span class="hljs-comment">default priority of	zero as that is the highest possible priority,</span>
+<span class="hljs-comment">which is guaranteed to be above configMAX_SYSCALL_INTERRUPT_PRIORITY,</span>
+<span class="hljs-comment">and	therefore also guaranteed to be invalid.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">FreeRTOS maintains separate thread and ISR API functions to ensure</span>
+<span class="hljs-comment">interrupt entry is as fast and simple as possible.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">The following links provide detailed information:</span>
+<span class="hljs-comment">http://www.freertos.org/RTOS-Cortex-M3-M4.html</span>
+<span class="hljs-comment">http://www.freertos.org/FAQHelp.html */</span>
+configASSERT( ucCurrentPriority &gt;= ucMaxSysCallPriority );</code></pre></div>
+
+<p>按它的说法，就是系统中断的优先级不能设得比 configMAX_SYSCALL_INTERRUPT_PRIORITY 高（数值更低），
+那让我试试把它改小吧。</p>
+<p>好了，这个问题解决了，但是总是跳到 <code>Hard_Fault_Handler()</code> 。</p>
+<p>于是上网找了找官方的LwIP示例，找了一通发现原来是 FreeRTOS 的 defaultThread
+也就是 LwIP 的线程给的 Stack size 太小了，默认只有 128，但是官方给的是 512 * 4，差的也太多了。</p>
+<p>仔细看了看 LwIP 模块有个配置项叫 <code>DEFAULT_THREAD_STACKSIZE</code>, 默认为 1024，可能是要比这个大吧。</p>
+<p>姑且先改为 2048 吧，这样系统就正常运行了。</p>
+<h3 id="TCP-UDP-with-RTOS-测试"><a href="#TCP-UDP-with-RTOS-测试" class="headerlink" title="TCP&#x2F;UDP with RTOS 测试"></a>TCP&#x2F;UDP with RTOS 测试</h3><p>接着试一试示例里 TCPUDP with RTOS 的代码吧，直接把 tcpecho 的代码 copy 进来，在 main 中的 StartDefaultThread 里面初始化，
+然后在电脑上发一个消息，结果是成功地返回了。</p>
+<p>然后再试试 UDP, 同样地，把代码 copy 进来再做一些小修改，结果就跑不动了。</p>
+<p>经过一番调试，最后是定位到这个 ASSERT 中：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-comment">/* A function that implements a task must not exit or attempt to return to</span>
+<span class="hljs-comment">its caller as there is nothing to return to.  If a task wants to exit it</span>
+<span class="hljs-comment">should instead call vTaskDelete( NULL ).</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Artificially force an assert() to be triggered if configASSERT() is</span>
+<span class="hljs-comment">defined, then stop here so application writers can catch the error. */</span>
+configASSERT( uxCriticalNesting == ~<span class="hljs-number">0UL</span> );</code></pre></div>
+
+<p>他说线程中不应该有返回，但是我也没有返回啊，于是去问问 Kimi, 他给我翻译了一遍，然后说可能是栈空间不足，可以尝试增加任务的栈大小。
+欸，貌似似曾相识的问题。于是去到 FreeRTOS 的配置中，增大了 <code>TOTAL_HEAP_SIZE</code>, 然后就可以了…… 还真是这个问题啊。
+看来以后遇到奇怪的错误还是优先检查一下分配的栈空间够不够吧（或者直接一步到位分到最大值，但隐约感觉这样不太好）</p>
+<blockquote>
+<p>顺带一提，现在的 <code>TOTAL_HEAP_SIZE</code> 是 20480 Bytes(20KB), 之前的话是 15360 Bytes(15KB), 也就差了 5KB 嘛 (ﾟ∀。), 
+这样一看还是增到原来的两倍得了，也就是 30720 Bytes, 反正最大支持 128KB 呢 ( &#96; ・´)</p>
+</blockquote>
+<p>嗯……现在还有个奇怪的问题，就是复位之后如果在短时间内给板子发信息，就会出错，程序就不跑了（用定时器写了个LED 1s 闪烁的程序，但是 LED 也不闪了）。
+但是如果过一定时间再发，好像就没有这个问题，很奇怪，难道要在某个地方加个延时吗？</p>
+<h2 id="SOEM-移植"><a href="#SOEM-移植" class="headerlink" title="SOEM 移植"></a>SOEM 移植</h2><p>接下来就是 SOEM 的移植工作了，看到一个挺不错的<a target="_blank" rel="noopener" href="https://blog.csdn.net/pengrunxin/article/details/127202794">文章</a>，甚至也是控制汇川的，先参考参考。
+<a target="_blank" rel="noopener" href="https://club.rt-thread.org/ask/article/59c34adc09b75123.html">这篇帖子</a>是用 RT-Thread 实现主站控制汇川电机，但没有开放源码，也能稍作参考。</p>
+<p>移植列表 (osal.c)  </p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> void osal_timer_start(osal_timert * self, uint32 timeout_us);</li>
+<li><input checked="" disabled="" type="checkbox"> boolean osal_timer_is_expired(osal_timert * self);</li>
+<li><input checked="" disabled="" type="checkbox"> int osal_usleep(uint32 usec);</li>
+<li><input checked="" disabled="" type="checkbox"> ec_timet osal_current_time(void);</li>
+<li><input checked="" disabled="" type="checkbox"> void osal_time_diff(ec_timet *start, ec_timet *end, ec_timet *diff);</li>
+<li><input checked="" disabled="" type="checkbox"> int osal_thread_create(void *thandle, int stacksize, void *func, void *param);</li>
+<li><input checked="" disabled="" type="checkbox"> int osal_thread_create_rt(void *thandle, int stacksize, void *func, void *param);</li>
+</ul>
+<p>OK, osal.c 文件移植完成，接下来是 oshw 目录下的 nicdrv(NIC driver) 和 oshw(OS hardware)</p>
+<p>oshw.c: </p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> uint16 oshw_htons(uint16 host);</li>
+<li><input checked="" disabled="" type="checkbox"> uint16 oshw_ntohs(uint16 network);</li>
+<li><input checked="" disabled="" type="checkbox"> ec_adaptert * oshw_find_adapters(void);</li>
+<li><input checked="" disabled="" type="checkbox"> void oshw_free_adapters(ec_adaptert * adapter);</li>
+</ul>
+<p>nicdrv.c:</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> void ec_setupheader(void *p);</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_setupnic(ecx_portt *port, const char * ifname, int secondary);      	&#x2F;&#x2F;网口初始化并打开</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_closenic(ecx_portt *port);                                           	&#x2F;&#x2F;网口关闭</li>
+<li><input checked="" disabled="" type="checkbox"> void ecx_setbufstat(ecx_portt *port, int idx, int bufstat);                 	&#x2F;&#x2F;设置idx号缓冲区状</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_getindex(ecx_portt *port);                                           	&#x2F;&#x2F;获取空闲idx缓冲区号获取新的帧标识符索引并分配相应的缓冲区.</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_outframe(ecx_portt *port, int idx, int stacknumber);                	&#x2F;&#x2F;发送数据</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_outframe_red(ecx_portt *port, int idx);                             	&#x2F;&#x2F;通过次口发送数据</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_waitinframe(ecx_portt *port, int idx, int timeout);                 	&#x2F;&#x2F;等待idx号返回并接收 接收数据函数</li>
+<li><input checked="" disabled="" type="checkbox"> int ecx_srconfirm(ecx_portt *port, int idx,int timeout);                    	&#x2F;&#x2F;发送idx 并等待接收数据的函数</li>
+</ul>
+<p>en… 偶然间看到这个：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-comment">// ethercattype.h</span>
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">/** define EC_VER1 if version 1 default context and functions are needed</span>
+<span class="hljs-comment"> * comment if application uses only ecx_ functions and own context */</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> EC_VER1</span></code></pre></div>
+
+<p>以及这一段：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-comment">// nicdrv.h</span>
+<span class="hljs-comment">// ...</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> EC_VER1</span>
+<span class="hljs-keyword">extern</span> ecx_portt     ecx_port;
+<span class="hljs-keyword">extern</span> ecx_redportt  ecx_redport;
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_setupnic</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> * ifname, <span class="hljs-type">int</span> secondary)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_closenic</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;
+<span class="hljs-type">void</span> <span class="hljs-title function_">ec_setbufstat</span><span class="hljs-params">(<span class="hljs-type">int</span> idx, <span class="hljs-type">int</span> bufstat)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_getindex</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_outframe</span><span class="hljs-params">(<span class="hljs-type">int</span> idx, <span class="hljs-type">int</span> stacknumber)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_outframe_red</span><span class="hljs-params">(<span class="hljs-type">int</span> idx)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_waitinframe</span><span class="hljs-params">(<span class="hljs-type">int</span> idx, <span class="hljs-type">int</span> timeout)</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">ec_srconfirm</span><span class="hljs-params">(<span class="hljs-type">int</span> idx,<span class="hljs-type">int</span> timeout)</span>;
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<p>那我果断注释掉，又可以少移植一部分。还有我发现其实这两个模块的代码貌似在主要模块 soem 中也不怎么用到，原来还以为是主模块依赖这两个模块，所以统一接口方便移植呢，现在看来，嗯……不太懂了</p>
+<h2 id="硬件初始化问题"><a href="#硬件初始化问题" class="headerlink" title="硬件初始化问题"></a>硬件初始化问题</h2><p>在测试 ETH 模块时又遇到一个很奇怪的问题，就是下面这段代码，本应该是会 Start ETH 模块才对，但调试了几次，感觉它根本就没有进到这一步，
+而且是单步执行的时候，可以正常运行，但直接连续运行的时候就不行。</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">ETH_StartLink</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>
+&#123;
+  ETH_MACConfigTypeDef MACConf = &#123;<span class="hljs-number">0</span>&#125;;
+  <span class="hljs-type">int32_t</span> PHYLinkState = <span class="hljs-number">0U</span>;
+  <span class="hljs-type">uint32_t</span> linkchanged = <span class="hljs-number">0U</span>, speed = <span class="hljs-number">0U</span>, duplex =<span class="hljs-number">0U</span>;
+  PHYLinkState = LAN8720_GetLinkState(&amp;lan8720);
+  <span class="hljs-keyword">if</span>(PHYLinkState &lt;= LAN8720_STATUS_LINK_DOWN)
+  &#123;
+    HAL_ETH_Stop(&amp;heth);
+  &#125;
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(PHYLinkState &gt; LAN8720_STATUS_LINK_DOWN)
+  &#123;
+    <span class="hljs-keyword">switch</span> (PHYLinkState)
+    &#123;
+    <span class="hljs-keyword">case</span> LAN8720_STATUS_100MBITS_FULLDUPLEX:
+      duplex = ETH_FULLDUPLEX_MODE;
+      speed = ETH_SPEED_100M;
+      linkchanged = <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> LAN8720_STATUS_100MBITS_HALFDUPLEX:
+      duplex = ETH_HALFDUPLEX_MODE;
+      speed = ETH_SPEED_100M;
+      linkchanged = <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> LAN8720_STATUS_10MBITS_FULLDUPLEX:
+      duplex = ETH_FULLDUPLEX_MODE;
+      speed = ETH_SPEED_10M;
+      linkchanged = <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> LAN8720_STATUS_10MBITS_HALFDUPLEX:
+      duplex = ETH_HALFDUPLEX_MODE;
+      speed = ETH_SPEED_10M;
+      linkchanged = <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">default</span>:
+      <span class="hljs-keyword">break</span>;
+    &#125;
+    <span class="hljs-keyword">if</span>(linkchanged)
+    &#123;
+      HAL_ETH_GetMACConfig(&amp;heth, &amp;MACConf);
+      MACConf.DuplexMode = duplex;
+      MACConf.Speed = speed;
+      MACConf.DropTCPIPChecksumErrorPacket = DISABLE;
+      MACConf.ForwardRxUndersizedGoodPacket = ENABLE;
+      HAL_ETH_SetMACConfig(&amp;heth, &amp;MACConf);
+      HAL_ETH_Start_IT(&amp;heth);
+      &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<p>这时我也想到是某个地方可能需要等待一下初始化之类的，但就是没找到。
+在数次尝试后，才想起来给 <code>PHYLinkState &lt;= LAN8720_STATUS_LINK_DOWN</code> 这个判断里面打个断点。
+果然就是连续运行就会进到这一步，单步执行就会执行下面的正常的 Start 代码。
+那看来是 PHY 外设的初始化需要一点时间。那接下来就是看看 LAN8720 的数据手册看看能不能加点判断，或者加一个延时暴力解决吧。</p>
+<p>简单查找，发现 <em>PHY SPECIAL CONTROL&#x2F;STATUS REGISTER</em> 寄存器中有这样一位：</p>
+<blockquote>
+<p>Autodone: bit 12<br>Auto-negotiation done indication:<br>0 &#x3D; Auto-negotiation is not done or disabled (or not active)<br>1 &#x3D; Auto-negotiation is done  </p>
+</blockquote>
+<p>那么就通过一个 while 循环判断这一位的值来确保 auto-negotiation 的完成吧：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-keyword">do</span> &#123;
+    pObj-&gt;IO.ReadReg(addr, LAN8720_PHYSCSR, &amp;regvalue);
+&#125; <span class="hljs-keyword">while</span>((regvalue &amp; LAN8720_PHYSCSR_AUTONEGO_DONE) != LAN8720_PHYSCSR_AUTONEGO_DONE); <span class="hljs-comment">// 等待 auto-negotiation 完成</span></code></pre></div>
+
+<h2 id="结合-FreeRTOS-与-ETH"><a href="#结合-FreeRTOS-与-ETH" class="headerlink" title="结合 FreeRTOS 与 ETH"></a>结合 FreeRTOS 与 ETH</h2><p>现在遇到一个很难搞的问题，一个 ETH 测试程序跑得好好的，但一加上 FreeRTOS 的模块就出问题了，不知道怎么搞啊。</p>
+<p>经过不断地观察，发现使用 LwIP 与 FreeRTOS 的示例里，<code>MX_LWIP_Init()</code> 这个初始化函数是在线程里面的，但是我的 ETH 测试程序里，<code>MX_ETH_Init()</code> 是在 main 函数里，
+os 初始化和开始之前的。于是试着将这个函数的调用移到 default 线程中……然后就可以了。但是，这到底是为什么呢？难道说 RTOS 的初始化和开始的过程会对 ETH 或者 DMA 模块有影响吗？
+还是说，是内存地址的原因呢。RTOS 确实是会对内存进行管理的。</p>
+<p>接着就还有一个问题，就是在 free 内存的时候会报错。</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_ETH_RxCpltCallback</span><span class="hljs-params">(ETH_HandleTypeDef * heth)</span>
+&#123;
+	ETH_BufferTypeDef * pBuff;
+	HAL_StatusTypeDef status;
+	status = HAL_ETH_ReadData(heth, (<span class="hljs-type">void</span>**)&amp;pBuff);
+	<span class="hljs-keyword">if</span> (status != HAL_OK) &#123;
+		Error_Handler();
+	&#125;
+	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Packet Received successfully!\r\n&quot;</span>);
+	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Received length: %lu&quot;</span>, pBuff-&gt;len);
+	fflush(<span class="hljs-number">0</span>);
+	<span class="hljs-built_in">free</span>(pBuff); <span class="hljs-comment">// 就是这里有问题</span>
+&#125;</code></pre></div>
+<p>下面是对应的分配内存代码：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_ETH_RxAllocateCallback</span><span class="hljs-params">(<span class="hljs-type">uint8_t</span> ** buff)</span> &#123;
+ ETH_BufferTypeDef * p = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">100</span>);
+ <span class="hljs-keyword">if</span> (p)
+ &#123;
+   * buff = (<span class="hljs-type">uint8_t</span> * ) p + offsetof(ETH_AppBuff, buffer);
+   p -&gt; next = <span class="hljs-literal">NULL</span>;
+   p -&gt; len = <span class="hljs-number">100</span>;
+ &#125; <span class="hljs-keyword">else</span> &#123;
+   * buff = <span class="hljs-literal">NULL</span>;
+ &#125;
+&#125;</code></pre></div>
+
+<p>这个问题的话，就试试用 RTOS 提供的内存管理处理一下吧。首先在线程中， ETH 初始化前初始化一个内存池子。</p>
+<div class="code-wrapper"><pre><code class="hljs c">rxBufferPool = osMemoryPoolNew(ETH_RXBUFNB, ETH_RX_BUF_SIZE, <span class="hljs-literal">NULL</span>);
+assert_param(rxBufferPool != <span class="hljs-literal">NULL</span>);</code></pre></div>
+
+<p>接着修改分配内存的代码：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_ETH_RxAllocateCallback</span><span class="hljs-params">(<span class="hljs-type">uint8_t</span> ** buff)</span> &#123;
+	ETH_AppBuff * pAppBuff = osMemoryPoolAlloc(rxBufferPool, <span class="hljs-number">1000</span>);  <span class="hljs-comment">// 这里使用了 os 的线程安全内存分配方法</span>
+	<span class="hljs-keyword">if</span> (pAppBuff) &#123;
+		ETH_BufferTypeDef * p = &amp;(pAppBuff-&gt;AppBuff);
+		*buff = pAppBuff-&gt;buffer;
+		p-&gt;next = <span class="hljs-literal">NULL</span>;
+		p-&gt;len = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 初始大小设为 0</span>
+		p-&gt;buffer = *buff; <span class="hljs-comment">// buffer 指针指向实际 buff 位置</span>
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		*buff = <span class="hljs-literal">NULL</span>;
+	&#125;
+&#125;</code></pre></div>
+
+<p>然后是接收到数据时的回调函数：</p>
+<div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_ETH_RxCpltCallback</span><span class="hljs-params">(ETH_HandleTypeDef * heth)</span>
+&#123;
+	ETH_BufferTypeDef * pBuff;
+	HAL_StatusTypeDef status;
+	status = HAL_ETH_ReadData(heth, (<span class="hljs-type">void</span>**)&amp;pBuff);
+	<span class="hljs-keyword">if</span> (status != HAL_OK) &#123;
+		Error_Handler();
+	&#125;
+	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Packet Received successfully!\r\n&quot;</span>);
+	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Received length: %lu&quot;</span>, pBuff-&gt;len);
+	osMemoryPoolFree(rxBufferPool, pBuff);  <span class="hljs-comment">// 这边修改为使用 os 的释放方法</span>
+	fflush(<span class="hljs-number">0</span>);
+&#125;</code></pre></div>
+<p>将开发板和电脑用网线连接，然后配置一下 IP, 就能使用 Wireshark 抓取到板子发送的 packet 了：</p>
+<p><img src="/2024/11/30/stm32-ethercat/img1.png" srcset="/img/loading.gif" lazyload alt="Wireshark 上接收到的数据"></p>
+<p><img src="/2024/11/30/stm32-ethercat/img2.png" srcset="/img/loading.gif" lazyload alt="packet 的内容"></p>
+<p>至此就成功应用了 FreeRTOS 并实现了 ETH 的基本功能。</p>
+<h2 id="成为-Vscode-少女吧"><a href="#成为-Vscode-少女吧" class="headerlink" title="成为 Vscode 少女吧"></a>成为 Vscode 少女吧</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=590252&auto=1&height=66"></iframe>
+
+<p>终于,我受不了那个鬼 CubeIDE 了，虽然大致还是功能齐全的，但是是不是就卡死要重启，而且更个新还更坏了，用不了了，真是垃圾 eclipse。于是果断改用 vscode，
+其实官方也已经有了个叫 STM32 VS Code Extension 的拓展，只要按照 user guide 上的做就能顺利迁移了。真是悔不当初啊。不过用这个插件有一个限制，就是它只有 st-link 的选项，
+如果用 J-Link 或其它下载器不知道能不能用。</p>
+<p>主要的操作就是把一些之前的 IDE 相关的文件删掉，一般只用保留 <code>Driver</code>, <code>Core</code>, <code>Middlewares</code>, <code>*.ioc</code>, <code>.mxproject</code> 这几个文件&#x2F;目录就可以了。然后用 CubeMX 打开 .ioc 文件，
+IDE 那里选择 Cmake, 然后重新生成代码。在拓展里有一个 <code>import Cmake project</code> 的选项，使用它选择该目录，拓展就会生成一些 <code>.vscode</code> 的文件，这样就实现可以自动补全之类的功能啦！
+接着如果项目有一些自己添加的源文件和 include 的路径需要在 <code>CmakeLists.txt</code> 里面对应地添加。如下面这样：</p>
+<div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-comment"># 通过 file 命令匹配多个文件</span>
+<span class="hljs-keyword">file</span>(GLOB SOEM_SOURCES <span class="hljs-string">&quot;Middlewares/Ethercat/osal/*.c&quot;</span> <span class="hljs-string">&quot;Middlewares/Ethercat/oshw/*.c&quot;</span> <span class="hljs-string">&quot;Middlewares/Ethercat/soem/*.c&quot;</span>)
+<span class="hljs-comment"># Add sources to executable</span>
+<span class="hljs-keyword">target_sources</span>(<span class="hljs-variable">$&#123;CMAKE_PROJECT_NAME&#125;</span> PRIVATE
+    <span class="hljs-comment"># Add user sources here</span>
+    <span class="hljs-variable">$&#123;SOEM_SOURCES&#125;</span> <span class="hljs-comment"># 添加匹配的文件</span>
+    <span class="hljs-string">&quot;Core/Src/oled.c&quot;</span> <span class="hljs-comment"># 直接添加源文件</span>
+    <span class="hljs-string">&quot;Core/Src/key.c&quot;</span>
+    <span class="hljs-string">&quot;Core/Src/lan8720.c&quot;</span>
+    <span class="hljs-string">&quot;Core/Src/SV630N.c&quot;</span>
+)
+
+<span class="hljs-comment"># Add include paths</span>
+<span class="hljs-keyword">target_include_directories</span>(<span class="hljs-variable">$&#123;CMAKE_PROJECT_NAME&#125;</span> PRIVATE
+    <span class="hljs-comment"># Add user defined include paths</span>
+    <span class="hljs-string">&quot;Middlewares/Ethercat/osal&quot;</span> <span class="hljs-comment"># 添加包含路径</span>
+    <span class="hljs-string">&quot;Middlewares/Ethercat/oshw&quot;</span>
+    <span class="hljs-string">&quot;Middlewares/Ethercat/soem&quot;</span>
+)</code></pre></div>
+
+<p>这样之后点击生成应该就可以开始 build 流程了。</p>
+<blockquote>
+<p>如果配置 Cmake 的时候提示缺少 Ninja 的话，需要再安装一个 <a target="_blank" rel="noopener" href="https://github.com/ninja-build/ninja">ninja build tool</a><br>点击上面的链接，进入 <a target="_blank" rel="noopener" href="https://github.com/ninja-build/ninja/releases">Release 页面</a>，下载对应系统架构的版本，解压文件到一个目录，并把该目录添加进环境变量的 Path 里面（为安全着想，这个目录最好没有其它文件）</p>
+</blockquote>
+<p>build 完之后，在侧边栏找到运行与调试，选择 <code>Build &amp; Debug...</code>，然后点开始调试，就会开始下载程序并调试了（记得把线连上）。如果它提示需要更新 st-link firmware 那就在扩展里点相应的选项即可。如果报错，那就在命令行敲 <code>stlinkupgrade</code>（记得把线连上）。</p>
+<p>接着就可以在 vscode 里愉快地敲代码啦。</p>
+<h2 id="注意-ISR-与-RTOS-的配合"><a href="#注意-ISR-与-RTOS-的配合" class="headerlink" title="注意 ISR 与 RTOS 的配合"></a>注意 ISR 与 RTOS 的配合</h2><p>Debug 途中，遇到一个问题，貌似网络接收不太正常，找了一圈发现是 <code>RxAllocCallback()</code> 函数中使用内存池进行内存分配时出现了问题，
+代码如下：</p>
+<div class="code-wrapper"><pre><code class="hljs c">ETH_AppBuff* appBuff = osMemoryPoolAlloc(rxMemoryPool, <span class="hljs-number">1000</span>);</code></pre></div>
+
+<p>调试时发现，这个函数调用前 4 次都正常，但后面就返回 NULL 了，而内存池显然是还有空间的。进入这个函数的源码内看，发现原来是在 ISR 中，
+它要求 <code>timeout == 0</code>，倒也合情合理。而这个回调函数的前4次是在 HAL_ETH_Start_IT() 中调用的，后面的就是在中断中调用了，所以就出问题了。</p>
+<p>为解决这个问题，我干脆新建两个 ETH 发送和接收的线程，rx 中断仅仅用于释放信号量，线程中则永久等待信号量，这样简化了 ISR，也不要在 ISR 中处理这么多事情了。</p>
+<p>写完，实测，能跑，不错。</p>
+<h2 id="汇川进入-OP-状态时出错"><a href="#汇川进入-OP-状态时出错" class="headerlink" title="汇川进入 OP 状态时出错"></a>汇川进入 OP 状态时出错</h2><p>现在有个棘手的问题，就是汇川驱动器 SV630N，在接收到进入 OP 运行状态的请求时，就会报错 EE09.3, 看文档的话，说的是同步丢失的问题，
+上网找了一圈也都试过各种方法都不太行。不知道要怎么办了。</p>
+<p><img src="/2024/11/30/stm32-ethercat/img3.png" srcset="/img/loading.gif" lazyload alt="EE09.3 的错误详细信息"></p>
+<p>在网上寻找的时候发现 SOEM Github 上的<a target="_blank" rel="noopener" href="https://github.com/OpenEtherCATsociety/SOEM/issues/487#issuecomment-786245585">一个issue</a>，他说可以检查一下 Register System Time Difference (0x092C:0x092F)，它的值最好是小于 1ms，若满足要求则可以开始 sync0&#x2F;1 信号的生成。</p>
+<blockquote>
+<p>The best way to make sure all slave clocks are locked in is to measure the internal closed loop parameters. Register System Time Difference (0x092C:0x092F) is the obvious one to test. When it’s value drops below one microsecond and stays below it then you have reached reasonable synchronization. It is the task of the application programmer (and not SOEM) to monitor this for all slaves. Only when this constraint is satisfied try to start the sync0&#x2F;1 generation.</p>
+</blockquote>
+<p>有可能要在</p>
+<blockquote>
+<p> Keep in mind that some slaves will take up to 10 seconds or more to measure. Forcing safe-OP to OP before that will cause the slave to fail.</p>
+</blockquote>
+<p>接着提出 issue 的人指出可以尝试在 config mapping 之前配置 DC clock，但我的代码就是这样的呀。</p>
+<blockquote>
+<p>Thank you so much Arthur. Finally after reading your message and many old issues as well I realized that it’s better to configure de DC clock before mapping the slaves (in Pre-OP). I was first mapping the slaves and then configuring the DC clock (I think that I took it from an example). So right now the slaves go to OP without no error at the first attempt!</p>
+</blockquote>
+<blockquote>
+<p>The thing is when you call ec_dcsync0() before ec_configdc() that the latter will overwrite the slave reference clock. If the first sync0 did not trigger before that then it most likely will not trigger for a long time. The reason is that the first sync0 will fire at an absolute time (64bit). So make sure this absolute time is always a bit in the future.</p>
+</blockquote>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/OpenEtherCATsociety/SOEM/issues/520">另一篇 issue</a> 中，开发者说明了可能需要在 safe-op 状态下跑一段时间，确认了满足条件后再请求进入 OP 状态，以让驱动器有足够的时间确认 DC 时钟。</p>
+<blockquote>
+<p>The correct timing to start sync0 generation is AFTER slave AND master clock synchronization, but BEFORE going to OP. And, to be sure the slave has time to validate proper master and sync0 timing, wait a few seconds before going to OP. ec_configdc() should be called at pre-OP. Then run the 10.000 cycles, then sync the master clock. There are a few weird slaves out there that require to set-up sync0 on the transition from pre-OP to safe-OP. This is violating the EtherCAT protocol specification but what can you do? It is like “I was programmed without understanding the standards and only tested with TwinCAT and now I am confused and going to crash”.</p>
+</blockquote>
+<p>然后下面是 issue 作者整理的一份执行顺序</p>
+<p>Okay so the order should be:</p>
+<ol>
+<li>Call ec_config_init() to move from INIT to PRE-OP state.</li>
+<li>Do slave-specific configurations via SDO communication</li>
+<li>Set ecx_context.manualstatechange &#x3D; 1. Map PDOs for all slaves by calling ec_config_map().</li>
+<li>Call ec_configdc() in PRE-OP state</li>
+<li>Manually call the transition to SAFE-OP (some slaves require starting sync0 here, but this is a violation of the EtherCAT protocol spec so it is not the default)</li>
+<li>Do 10,000 process data cycles in SAFE-OP state</li>
+<li>Synchronise the slave and master clock by setting the master clock &#x3D; slave reference clock</li>
+<li>Call ec_dcsync0() for the reference clock slave</li>
+<li>Wait for a few seconds</li>
+<li>Transition to OP state</li>
+</ol>
+<p>我觉得可以先试试。</p>
+<p>嗯……试了也不行呐……</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="print-no-link">#嵌入式</a>
+      
+        <a href="/tags/STM32/" class="print-no-link">#STM32</a>
+      
+        <a href="/tags/EtherCAT/" class="print-no-link">#EtherCAT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Stm32-Ethercat 主站开发日志</div>
+      <div>https://worranhin.github.io/2024/11/30/stm32-ethercat/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/17/debug-dll/" title="在 C# 中 Debug C++ Dll">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在 C# 中 Debug C++ Dll</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/17/pip-conda/" title="Pip Install Gymnasium[box2d] 失败">
+                        <span class="hidden-mobile">Pip Install Gymnasium[box2d] 失败</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://waline-for-my-blog-delta.vercel.app/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":[],"lang":"zh-CN","emoji":["https://unpkg.com/@waline/emojis@1.2.0/bmoji","https://unpkg.com/@waline/emojis@1.2.0/bilibili"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © 2024 Hin. | Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>, themed with   <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  ﻿
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
