@@ -1,9 +1,14 @@
 ---
 title: stm32-ethercat 主站开发日志
-tags: [嵌入式, STM32, EtherCAT]
+tags:
+  - 嵌入式
+  - STM32
+  - EtherCAT
 index_img: /2024/11/30/stm32-ethercat/banner.jpg
 banner_img: /2024/11/30/stm32-ethercat/banner.jpg
+date: 2024-11-30 22:35:19
 ---
+
 
 在此姑且用流水账的形式记录一下用 STM32 开发 Ethercat 主站时遇到的重重困难。
 
@@ -434,4 +439,6 @@ Okay so the order should be:
 9. Wait for a few seconds
 10. Transition to OP state
 
-我觉得可以先试试
+我觉得可以先试试。
+
+嗯......试了也不行呐......
