@@ -19,24 +19,24 @@
   <meta name="author" content="Hin">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="在毕业之际，和同学去汕头来一场自驾游吧！">
+    <meta name="description" content="最近在重构课题组的一些控制代码，有一个机器人的控制涉及到了 Matlab 导出的 C++ 共享库，而配置这个东西真多坑啊，于是有了本文。 前提首先要使用 Matlab 共享库的前提条件是要安装对应的 Matlab Runtime。 其次，我手上有的是一个 .h 头文件，一个 .lib 导入库文件，一个 .dll 文件，和一个 .ctf 文件。那么就是常规的那些配置了。配置好包含路径、库路径后编译一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="汕头之旅🚗">
-<meta property="og:url" content="https://worranhin.github.io/2023/06/27/ShanTou/index.html">
+<meta property="og:title" content="在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题">
+<meta property="og:url" content="https://worranhin.github.io/2025/05/30/matlab-cpp/index.html">
 <meta property="og:site_name" content="Hin&#39;s 灵质空间">
-<meta property="og:description" content="在毕业之际，和同学去汕头来一场自驾游吧！">
+<meta property="og:description" content="最近在重构课题组的一些控制代码，有一个机器人的控制涉及到了 Matlab 导出的 C++ 共享库，而配置这个东西真多坑啊，于是有了本文。 前提首先要使用 Matlab 共享库的前提条件是要安装对应的 Matlab Runtime。 其次，我手上有的是一个 .h 头文件，一个 .lib 导入库文件，一个 .dll 文件，和一个 .ctf 文件。那么就是常规的那些配置了。配置好包含路径、库路径后编译一">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://worranhin.github.io/2023/06/27/ShanTou/cloud.jpg">
-<meta property="article:published_time" content="2023-06-27T08:08:36.000Z">
-<meta property="article:modified_time" content="2025-05-30T14:55:42.434Z">
+<meta property="article:published_time" content="2025-05-30T13:54:41.000Z">
+<meta property="article:modified_time" content="2025-05-30T14:55:42.482Z">
 <meta property="article:author" content="Hin">
-<meta property="article:tag" content="游记">
+<meta property="article:tag" content="cpp">
+<meta property="article:tag" content="DLL">
+<meta property="article:tag" content="Matlab">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://worranhin.github.io/2023/06/27/ShanTou/cloud.jpg">
   
   
   
-  <title>汕头之旅🚗 | Hin&#39;s 灵质空间</title>
+  <title>在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题 | Hin&#39;s 灵质空间</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,13 +210,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/2023/06/27/ShanTou/cloud.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/assets/banner-post.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">汕头之旅🚗</span>
+            <span id="subtitle">在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题</span>
           
         </div>
 
@@ -227,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-27 16:08" pubdate>
-          2023年6月27日 下午
+        <time datetime="2025-05-30 21:54" pubdate>
+          2025年5月30日 晚上
         </time>
       </span>
     
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          779 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          22 分钟
+          7 分钟
         
       </span>
     
@@ -287,105 +287,54 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">汕头之旅🚗</h1>
+            <h1 id="seo-header">在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题</h1>
             
             
               <div class="markdown-body">
                 
-                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1407540299&auto=0&height=66"></iframe>
+                <p>最近在重构课题组的一些控制代码，有一个机器人的控制涉及到了 Matlab 导出的 C++ 共享库，而配置这个东西真多坑啊，于是有了本文。</p>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>首先要使用 Matlab 共享库的前提条件是要安装对应的 <a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/compiler/install-the-matlab-runtime.html">Matlab Runtime</a>。</p>
+<p>其次，我手上有的是一个 <code>.h</code> 头文件，一个 <code>.lib</code> 导入库文件，一个 <code>.dll</code> 文件，和一个 <code>.ctf</code> 文件。那么就是常规的那些配置了。配置好包含路径、库路径后编译一下，发现链接有问题，于是根据头文件的提示把 <code>mclmcrrt.lib</code> 也加入进来，链接就没问题了。</p>
+<h2 id="库初始化的问题"><a href="#库初始化的问题" class="headerlink" title="库初始化的问题"></a>库初始化的问题</h2><p>编译和链接都没问题了，那么就开始调试了，下面是一个最小的流程：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// 初始化 matlab 库</span>
+    <span class="hljs-keyword">if</span> (!ok)
+        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Fail to initialize Matlab dll.&quot;</span>);
 
-<h2 id="出发"><a href="#出发" class="headerlink" title="出发"></a>出发</h2><p>在毕业离校之前，和同学一起去汕头来一次自驾游。从广州出发，开往汕头，四百多公里，将近五个小时，好在车上的人都是司机，轮着开也不会太辛苦。（事实上只有两个人轮着开高速）。路上还可以欣赏沿途的风景。</p>
-<!-- more -->
+    ok = <span class="hljs-built_in">invPosMainAnyPlace2ndOffsetInitialize</span>();  <span class="hljs-comment">// 初始化自定义库</span>
+    <span class="hljs-keyword">if</span> (!ok)
+        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Fail to initialize inv solver lib.&quot;</span>);
 
-<p><img src="/2023/06/27/ShanTou/falls.jpg" srcset="/img/loading.gif" lazyload alt="沿途上看到的瀑布"></p>
-<p><img src="/2023/06/27/ShanTou/bridge.jpg" srcset="/img/loading.gif" lazyload alt="金潮大桥"></p>
-<p>（天气也是非常晴朗呢）</p>
-<h2 id="第一天——逛逛市区"><a href="#第一天——逛逛市区" class="headerlink" title="第一天——逛逛市区"></a>第一天——逛逛市区</h2><h3 id="到达汕头"><a href="#到达汕头" class="headerlink" title="到达汕头"></a>到达汕头</h3><p>到达汕头后已经是中午了，我们先去到了本地同学老陈的家里稍加整顿，然后出去他家附近吃午饭——牛肉粿条。</p>
-<p><img src="/2023/06/27/ShanTou/teow.jpg" srcset="/img/loading.gif" lazyload alt="料很足的牛肉粿条"></p>
-<p>吃饱后顺便打包一份去接即将到达汕头站的同学。至此我们凑够了一车五个人。</p>
-<p>接着我们驱车前往市区，找了个地方歇脚，还顺便买了点喝的东西和一些小零食。</p>
-<h3 id="下午逛市区"><a href="#下午逛市区" class="headerlink" title="下午逛市区"></a>下午逛市区</h3><p>稍作休息，我们去到一个步行街逛了逛。</p>
-<p><img src="/2023/06/27/ShanTou/street.jpg" srcset="/img/loading.gif" lazyload alt="步行街"></p>
-<p>在步行街附近，找了家店吃了点水粿、无米粿和绿豆汤等作为下午茶。</p>
-<p><img src="/2023/06/27/ShanTou/ChweeKueh.jpg" srcset="/img/loading.gif" lazyload alt="甜甜的水粿"></p>
-<p><img src="/2023/06/27/ShanTou/hau-a-koe.jpg" srcset="/img/loading.gif" lazyload alt="韭菜馅的无米粿"></p>
-<p><img src="/2023/06/27/ShanTou/soup.jpg" srcset="/img/loading.gif" lazyload alt="清清凉凉的绿豆汤等"></p>
-<p>在炎炎夏日中，清清凉凉的绿豆汤无疑是全场最佳。绿豆汤整体是甜的，但和广州的绿豆糖水不同，这里的绿豆并不会煮得很烂，而是保持一颗颗的状态，而且用的也是去皮的绿豆，这样的结果是绿豆汤会很清澈，喝起来很解渴，非常不错。</p>
-<p>下午茶过后，下午就快要结束了，于是我们回去老陈家附近的一个酒店落脚并收拾行囊。</p>
-<h3 id="晚餐——牛肉火锅"><a href="#晚餐——牛肉火锅" class="headerlink" title="晚餐——牛肉火锅"></a>晚餐——牛肉火锅</h3><p>晚上，我们和老陈的家人一起共进晚餐，吃的是大名鼎鼎的潮汕牛肉火锅。</p>
-<p><img src="/2023/06/27/ShanTou/beef.jpg" srcset="/img/loading.gif" lazyload alt="满满的一碟牛肉"></p>
-<p>这样大碟的牛肉有两碟，可想而知我们这晚吃得有多饱。</p>
-<h3 id="晚上的东海岸"><a href="#晚上的东海岸" class="headerlink" title="晚上的东海岸"></a>晚上的东海岸</h3><p>吃得这么饱，当然要出去散散步消化一下，于是我们去到汕头的东海岸，散步。</p>
-<p>海岸边的海风挺大的，吹到人的身上也挺舒服的。</p>
-<p>海岸的下面是海滩，海滩上堆了很多人造物，<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21098231">搜了搜</a>发现这些东西叫护面块体，用于防浪和阻止舰船登录用的。</p>
-<p>在海边翻翻石头还能看到一些小蟹，也有很多在海边赶海的人。</p>
-<p><img src="/2023/06/27/ShanTou/crab.jpg" srcset="/img/loading.gif" lazyload alt="小小的蟹"></p>
-<p><img src="/2023/06/27/ShanTou/comber.jpg" srcset="/img/loading.gif" lazyload alt="赶海人的收获"></p>
-<p>回去的时候试了试打开天窗，把头伸出窗外，让海风猛烈地吹过我的身躯，这感觉实在非常舒爽，让我充分感受到了伸出窗外的狗头的快乐。</p>
-<p><img src="/2023/06/27/ShanTou/dog.jpg" srcset="/img/loading.gif" lazyload alt="伸出车窗外的狗头" title="就是这个感觉（图由 AI 生成）"></p>
-<p>回去经过城区的时候还买了草莓冰和甘草水果，真的是肚子收获满满的一天。</p>
-<p>等回到酒店已经快 12 点了，就洗洗睡了。</p>
-<h2 id="第二天——南澳岛🏖"><a href="#第二天——南澳岛🏖" class="headerlink" title="第二天——南澳岛🏖"></a>第二天——南澳岛🏖</h2><p>第二天的早上，老陈带我们去吃了汕头特色的肠粉，这里的肠粉里面也有很多料，像是用肠粉皮包着许多馅料的食物，馅料包括豆芽、小蚝等海边的东西，表面还有撒了一些菜圃，对早餐来说实在是太多了。</p>
-<p><img src="/2023/06/27/ShanTou/SVR.jpg" srcset="/img/loading.gif" lazyload alt="汕头肠粉"></p>
-<p>吃好早餐，我们启程前往南澳岛，耗时约一个小时。</p>
-<p><img src="/2023/06/27/ShanTou/onBridge.jpg" srcset="/img/loading.gif" lazyload alt="南澳大桥上的风光"></p>
-<p>南澳桥的通行费为 90 块钱，包含往返两程。过了南澳大桥就是南澳岛啦。</p>
-<p>南澳岛的主路基本就是沿着岛的周围而建的，而岛的中间是山，鲜有人烟。岛上的居民也大多靠海建设村庄。</p>
-<p><img src="/2023/06/27/ShanTou/motor.jpg" srcset="/img/loading.gif" lazyload alt="岛上骑摩托的酷姐姐"></p>
-<p>在这之前，我们订了岛上的一间民宿，但这时还没到入住时间，于是我们绕岛逆时针而行，前往北回归线广场看看。</p>
-<h3 id="北回归线广场"><a href="#北回归线广场" class="headerlink" title="北回归线广场"></a>北回归线广场</h3><p>北回归线广场上有一个大大的人造物，其上有一个球状物，球状物上有一个孔，据说在夏至的正午时分，太阳的光线就会通过这个孔照到地上。巧的是我们去的那天还正好是夏至日。所以那里也聚集了一大堆人，所以想一看究竟是<em>很难的啦</em>。</p>
-<p><img src="/2023/06/27/ShanTou/ball.jpg" srcset="/img/loading.gif" lazyload alt="北回归线的大球"></p>
-<p>通过这个大球的另一边是一片大海，<del>海的那边是……</del>是一望无际的大海。海边的风很大，比前一天在内陆东海岸的风大得多。（可以听听下面的视频稍微感受一下）</p>
-<p><video src="./wave.mp4" controls>您的浏览器不支持 HTML5 视频。</video></p>
-<h3 id="中午的海鲜大餐"><a href="#中午的海鲜大餐" class="headerlink" title="中午的海鲜大餐"></a>中午的海鲜大餐</h3><p>晃一晃又到了中午吃饭时间，这次去的是老陈同学推荐的海鲜餐厅，这里比较有意思的是他是先让客人报预算价钱，然后他会帮忙选菜式再让我们确认。他们的出品也是非常的不错。其中最有趣的是白灼鱿鱼，吃得每个人的嘴都是黑的。😂</p>
-<p>其次就是花甲（花蛤），非常的鲜甜，肉质饱满，是我的最爱😋。虾和鱼也很不错。还有第一次吃的海瓜子，不过这东西软软的，不太符合我的口味。据说这个东西在这边常被当做零食吃。</p>
-<p><img src="/2023/06/27/ShanTou/squid.jpg" srcset="/img/loading.gif" lazyload alt="白灼鱿鱼"></p>
-<p><img src="/2023/06/27/ShanTou/ManilaClam.jpg" srcset="/img/loading.gif" lazyload alt="花甲"></p>
-<p><img src="/2023/06/27/ShanTou/clam.jpg" srcset="/img/loading.gif" lazyload alt="海瓜子"></p>
-<h3 id="入住海景民宿"><a href="#入住海景民宿" class="headerlink" title="入住海景民宿"></a>入住海景民宿</h3><p>吃完饭后，我们前往预订的民宿入住，这个民宿比预期要好很多，可以说是远超预期，客厅和房间都很大，甚至还有麻将桌。海景也是真的海景，非常不错。</p>
-<p><img src="/2023/06/27/ShanTou/oceanRoom.jpg" srcset="/img/loading.gif" lazyload alt="海景房的海景"></p>
-<h3 id="与海浪共舞"><a href="#与海浪共舞" class="headerlink" title="与海浪共舞"></a>与海浪共舞</h3><p>民宿的楼下就是一片可供游客游玩的海滩，所以在下午休息片刻后，我们就换上泳衣前往海滩游玩。这里的海浪也非常的大，非等闲之辈可以驾驭得住，随着夜晚的靠近，海浪也随之愈发的增强。但在这海边可不缺弄潮儿，在那远处，能隐约看到缓缓游动的大叔。而我等凡人只能在靠近岸边的地方被海浪掀翻，不得不产生对大海的敬畏之情。</p>
-<p><img src="/2023/06/27/ShanTou/wave.jpg" srcset="/img/loading.gif" lazyload alt="下午的海浪"></p>
-<h3 id="夜游海岛"><a href="#夜游海岛" class="headerlink" title="夜游海岛"></a>夜游海岛</h3><p>从海滩回来，洗了洗澡，就又到了觅食的时间了。</p>
-<p>本打算去一家老陈以前去过的烧烤店吃烧烤的，但奈何那旁边的小河散发着大家难以忍受的恶臭，所以不得不改地方了。不过这里也没有白来，这家店还有炒冰吃，我们点了几份炒冰先填着肚子。话说炒冰这东西也是好久没吃过了，这家炒冰也是做得挺不错的。尽管环境的恶化让他们的烧烤生意冷淡，但他们家的炒冰也是挺多人来买的。</p>
-<p><img src="/2023/06/27/ShanTou/ice.jpg" srcset="/img/loading.gif" lazyload alt="炒冰"></p>
-<p>吃着炒冰，大家来到一家海产店买了点手信。然后去到一个长堤坝边上。这时老陈就开始整活了，他告诉我们有个地方有绳子可以爬上去堤坝上。于是秉持着探索精神，我们沿着堤坝走着，还真的找到了个绳子。于是大家也就纷纷爬了上去。但上去后纷纷表示被骗了。窄窄的堤坝，下面是还算高的海滩，海滩上堆了很多护面块体，这一看就不是一般人会下去的，可能也只有赶海的人会下去摸鱼吧。但上面的风倒是挺大的，大到大家都不敢站起来，脚趾紧紧扣着拖鞋，如果掉下去，应该也很难捞上来了。坐了一会，我们就下来了。</p>
-<p><img src="/2023/06/27/ShanTou/dam.jpg" srcset="/img/loading.gif" lazyload alt="堤坝上的风景"></p>
-<p><img src="/2023/06/27/ShanTou/climb.jpg" srcset="/img/loading.gif" lazyload alt="爬堤坝的老陈"></p>
-<h3 id="真正的烧烤"><a href="#真正的烧烤" class="headerlink" title="真正的烧烤"></a>真正的烧烤</h3><p>从堤坝下来后找了家挺多好评的烧烤摊，出发。</p>
-<p>烧烤嘛，也不用多说了，挺好吃的。</p>
-<p><img src="/2023/06/27/ShanTou/BBQ.jpg" srcset="/img/loading.gif" lazyload alt="烧烤的一部分"></p>
-<p>吃完烧烤，回到住的地方，玩了会麻将，这天就结束 nya~</p>
-<h2 id="第三天——重回市区"><a href="#第三天——重回市区" class="headerlink" title="第三天——重回市区"></a>第三天——重回市区</h2><p>前一天玩得比较晚，这一天也起的比较晚，合情合理。</p>
-<h3 id="最后的南澳时光"><a href="#最后的南澳时光" class="headerlink" title="最后的南澳时光"></a>最后的南澳时光</h3><p>于是我们买了点面包，就启程回去了。回去当然也不是原路返回。我们来的时候都只走了南半岛，那么回去的时候就继续逆时针地沿岛绕回去吧。这途中也能遇见一些好风景呢。</p>
-<p><img src="/2023/06/27/ShanTou/lighthouse.jpg" srcset="/img/loading.gif" lazyload alt="灯塔"></p>
-<p><img src="/2023/06/27/ShanTou/float.jpg" srcset="/img/loading.gif" lazyload alt="布满浮筒的大海"></p>
-<p><img src="/2023/06/27/ShanTou/NanAoBridge.jpg" srcset="/img/loading.gif" lazyload alt="南澳大桥" title="再见南澳"></p>
-<h3 id="回到市区"><a href="#回到市区" class="headerlink" title="回到市区"></a>回到市区</h3><p>回到市区我们吃了卤水火锅。</p>
-<p><img src="/2023/06/27/ShanTou/hotpot.jpg" srcset="/img/loading.gif" lazyload alt="卤水火锅"></p>
-<p>之后大家都觉得下午太热了，于是又躲到一家台球馆里避暑。就这样又到了傍晚时分。</p>
-<p>从台球馆出来，我们前往了江边吹风。</p>
-<h3 id="江边吹晚风"><a href="#江边吹晚风" class="headerlink" title="江边吹晚风"></a>江边吹晚风</h3><p>其实开始并非只是来吹风，而是想坐一坐这里的轮渡，然后过对岸看看。但是这天正值端午节，实在是太多人了，所以在江边吹吹风好了。</p>
-<p><img src="/2023/06/27/ShanTou/boat.jpg" srcset="/img/loading.gif" lazyload alt="挤满人的船"></p>
-<p>走过来的时候还顺便尝了尝这里的豆花和草粿。这里的豆花比广州那边的豆腐花要浓稠好多，非常顶饱。而草粿则感觉像是以前吃过的味道，不过依稀记得以前吃的是绿绿的，而这里的草粿则是像龟苓膏和凉粉一样是黑黑的，不过口感却和龟苓膏和凉粉都不同。</p>
-<p><img src="/2023/06/27/ShanTou/douhua.jpg" srcset="/img/loading.gif" lazyload alt="豆花"></p>
-<p>吹完风，我们到附近的一家薏米粥去吃一顿（相对）简单的晚餐。</p>
-<p>晚饭后在城里兜了一下，又尝了尝这里的绿豆饼、风吹饼和糖葱薄饼。本来还想试试蚝烙的，但是几家店都没开门，没办法，只能回去了。</p>
-<p>因为计划下一天早上回广州，所以这晚就早点休息了，毕竟还要开长途车呢。</p>
-<h2 id="第四天——返航"><a href="#第四天——返航" class="headerlink" title="第四天——返航"></a>第四天——返航</h2><p>早上吃了早餐就开车回去广州了。在汕头的最后一餐吃的是粿条，里面有虾、有蚝还有猪杂，很不错的一餐，可谓相见恨晚呐。</p>
-<p><img src="/2023/06/27/ShanTou/riceNoodles.jpg" srcset="/img/loading.gif" lazyload alt="粿条" title="汕头的最后一餐"></p>
-<p>吃了几次粿条，感觉跟广州这边的河粉还挺像的。希望回到广州也能吃到这么丰富的粿条。</p>
-<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2><p>快乐的旅行时间总是过得这么快，这次虽然只在汕头玩，但感觉完全没玩够呢，蚝烙还没吃着就得离开了。更何况还有潮州、揭阳、汕尾都没去过呢（倒是经过了）（不过据说汕尾不算潮汕地区？）。一言以蔽之，潮汕地区是个值得再来的地方🥰。</p>
-<style>
-  video {
-    width: 720px;
-    max-width: 90%;
-    margin: 0 auto;
-    display: block;
-    border-radius: 5px;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
-  }
-</style>
+    <span class="hljs-keyword">auto</span> result = <span class="hljs-built_in">invPosMainAnyPlace2ndOffset</span>(<span class="hljs-comment">/* 函数的参数 */</span>);  <span class="hljs-comment">// 调用函数</span>
+    <span class="hljs-comment">// 处理结果</span>
+
+    <span class="hljs-built_in">invPosMainAnyPlace2ndOffsetTerminate</span>();  <span class="hljs-comment">// 终止自定义库</span>
+    ok = <span class="hljs-built_in">mclTerminateApplication</span>();  <span class="hljs-comment">// 终止 matlab 库</span>
+    <span class="hljs-keyword">if</span> (!ok)
+        std::cerr &lt;&lt; <span class="hljs-string">&quot;Fail to terminate matlab dll.&quot;</span>;
+&#125;</code></pre></div>
+
+<p>然而，运行 <code>invPosMainAnyPlace2ndOffsetInitialize()</code> 的时候返回值为 <code>false</code> 也就是说不能完成用户库的初始化。在网上找了一通没有结果，然后想起还有个 <code>.ctf</code> 文件，于是将他丢到可执行文件下的目录里，欸，然后就好了。</p>
+<h2 id="访问冲突错误"><a href="#访问冲突错误" class="headerlink" title="访问冲突错误"></a>访问冲突错误</h2><p>但是这时候又遇到了另一个问题，那就是在运行 <code>invPosMainAnyPlace2ndOffsetInitialize()</code> 的时候，会报出接连几个访问冲突的错误，像下面这样：</p>
+<blockquote>
+<p>0x000000006C518598 (jvm.dll)处(位于 TestIndustrialController.exe 中)引发的异常: 0xC0000005: 写入位置 0x0000018E77F30580 时发生访问冲突。</p>
+</blockquote>
+<p>但与此同时，初始化的结果又为 <code>true</code> 然后后面的函数功能也正常。另外，如果不开调试模式运行，它也没有什么异常的地方，也不报错了。但是调试的时候就很不方便也很不爽。于是又是上网进行一通查找，最后在一个 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/ask/sof/114327358">Stack Overflow 用户</a>找到了解决方法。</p>
+<p>解决的方法就是修改 <code>mclInitializeApplication()</code> 的调用参数，如下：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* args[] = &#123; <span class="hljs-string">&quot;-nojvm&quot;</span> &#125;;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> count = <span class="hljs-built_in">sizeof</span>(args) / <span class="hljs-built_in">sizeof</span>(args[<span class="hljs-number">0</span>]);
+<span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(args, count);</code></pre></div>
+<p>其实应该就是禁用 jvm 的意思吧。到这里才发现那些个错误大部分都是由 <code>jvm.dll</code> 发出的，也正因此可以通过禁用 jvm 来解决问题。</p>
+<p>然后，我又找到<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/compiler_sdk/cxx/mclinitializeapplication.html#mw_c3d0bbd0-f7f9-4775-92b0-0665f81359cc">这个函数的文档</a>看了一下，它的声明如下：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">mclInitializeApplication</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> **options, <span class="hljs-type">int</span> count)</span></span></code></pre></div>
+<p>其中第一个参数是 C 风格的字符串数组，第二个参数是数组的大小，也就是说，上面提到的解决方案的第二个参数应该为 <code>1</code> 才对，于是修改如下：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* args[] = &#123; <span class="hljs-string">&quot;-nojvm&quot;</span> &#125;;
+<span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(args, <span class="hljs-number">1</span>);</code></pre></div>
+
+<p>经测试，修改后的代码也没有问题，但是更严谨，免得后面又出什么问题。不过奇怪的是，在文档中指出，<code>-nojvm</code> 在 Linux 平台有效，但我明明是在 Windows 10 和 Visual Studio 2022 上跑的，这个选项却也生效了。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>Whatever，至此问题都处理完了。下班！</p>
+
                 
               </div>
             
@@ -397,7 +346,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B8%B8%E8%AE%B0/" class="print-no-link">#游记</a>
+        <a href="/tags/cpp/" class="print-no-link">#cpp</a>
+      
+        <a href="/tags/DLL/" class="print-no-link">#DLL</a>
+      
+        <a href="/tags/Matlab/" class="print-no-link">#Matlab</a>
       
     </div>
   
@@ -409,8 +362,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>汕头之旅🚗</div>
-      <div>https://worranhin.github.io/2023/06/27/ShanTou/</div>
+      <div>在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题</div>
+      <div>https://worranhin.github.io/2025/05/30/matlab-cpp/</div>
     </div>
     <div class="license-meta">
       
@@ -422,7 +375,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月27日</div>
+          <div>2025年5月30日</div>
         </div>
       
       
@@ -460,18 +413,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/09/22/newPC/" title="实用小工具">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">实用小工具</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/04/29/chatbot/" title="人与智能">
-                        <span class="hidden-mobile">人与智能</span>
+                      <a href="/2025/03/20/chatgpt-on-wechat/" title="在微信部署 AI 助手 [未完成]">
+                        <span class="hidden-mobile">在微信部署 AI 助手 [未完成]</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

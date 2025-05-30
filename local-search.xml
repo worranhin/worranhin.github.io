@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题</title>
+    <link href="/2025/05/30/matlab-cpp/"/>
+    <url>/2025/05/30/matlab-cpp/</url>
+    
+    <content type="html"><![CDATA[<p>最近在重构课题组的一些控制代码，有一个机器人的控制涉及到了 Matlab 导出的 C++ 共享库，而配置这个东西真多坑啊，于是有了本文。</p><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>首先要使用 Matlab 共享库的前提条件是要安装对应的 <a href="https://ww2.mathworks.cn/help/compiler/install-the-matlab-runtime.html">Matlab Runtime</a>。</p><p>其次，我手上有的是一个 <code>.h</code> 头文件，一个 <code>.lib</code> 导入库文件，一个 <code>.dll</code> 文件，和一个 <code>.ctf</code> 文件。那么就是常规的那些配置了。配置好包含路径、库路径后编译一下，发现链接有问题，于是根据头文件的提示把 <code>mclmcrrt.lib</code> 也加入进来，链接就没问题了。</p><h2 id="库初始化的问题"><a href="#库初始化的问题" class="headerlink" title="库初始化的问题"></a>库初始化的问题</h2><p>编译和链接都没问题了，那么就开始调试了，下面是一个最小的流程：</p><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// 初始化 matlab 库</span>    <span class="hljs-keyword">if</span> (!ok)        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Fail to initialize Matlab dll.&quot;</span>);    ok = <span class="hljs-built_in">invPosMainAnyPlace2ndOffsetInitialize</span>();  <span class="hljs-comment">// 初始化自定义库</span>    <span class="hljs-keyword">if</span> (!ok)        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Fail to initialize inv solver lib.&quot;</span>);    <span class="hljs-keyword">auto</span> result = <span class="hljs-built_in">invPosMainAnyPlace2ndOffset</span>(<span class="hljs-comment">/* 函数的参数 */</span>);  <span class="hljs-comment">// 调用函数</span>    <span class="hljs-comment">// 处理结果</span>    <span class="hljs-built_in">invPosMainAnyPlace2ndOffsetTerminate</span>();  <span class="hljs-comment">// 终止自定义库</span>    ok = <span class="hljs-built_in">mclTerminateApplication</span>();  <span class="hljs-comment">// 终止 matlab 库</span>    <span class="hljs-keyword">if</span> (!ok)        std::cerr &lt;&lt; <span class="hljs-string">&quot;Fail to terminate matlab dll.&quot;</span>;&#125;</code></pre></div><p>然而，运行 <code>invPosMainAnyPlace2ndOffsetInitialize()</code> 的时候返回值为 <code>false</code> 也就是说不能完成用户库的初始化。在网上找了一通没有结果，然后想起还有个 <code>.ctf</code> 文件，于是将他丢到可执行文件下的目录里，欸，然后就好了。</p><h2 id="访问冲突错误"><a href="#访问冲突错误" class="headerlink" title="访问冲突错误"></a>访问冲突错误</h2><p>但是这时候又遇到了另一个问题，那就是在运行 <code>invPosMainAnyPlace2ndOffsetInitialize()</code> 的时候，会报出接连几个访问冲突的错误，像下面这样：</p><blockquote><p>0x000000006C518598 (jvm.dll)处(位于 TestIndustrialController.exe 中)引发的异常: 0xC0000005: 写入位置 0x0000018E77F30580 时发生访问冲突。</p></blockquote><p>但与此同时，初始化的结果又为 <code>true</code> 然后后面的函数功能也正常。另外，如果不开调试模式运行，它也没有什么异常的地方，也不报错了。但是调试的时候就很不方便也很不爽。于是又是上网进行一通查找，最后在一个 <a href="https://cloud.tencent.com/developer/ask/sof/114327358">Stack Overflow 用户</a>找到了解决方法。</p><p>解决的方法就是修改 <code>mclInitializeApplication()</code> 的调用参数，如下：</p><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* args[] = &#123; <span class="hljs-string">&quot;-nojvm&quot;</span> &#125;;<span class="hljs-type">const</span> <span class="hljs-type">int</span> count = <span class="hljs-built_in">sizeof</span>(args) / <span class="hljs-built_in">sizeof</span>(args[<span class="hljs-number">0</span>]);<span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(args, count);</code></pre></div><p>其实应该就是禁用 jvm 的意思吧。到这里才发现那些个错误大部分都是由 <code>jvm.dll</code> 发出的，也正因此可以通过禁用 jvm 来解决问题。</p><p>然后，我又找到<a href="https://ww2.mathworks.cn/help/compiler_sdk/cxx/mclinitializeapplication.html#mw_c3d0bbd0-f7f9-4775-92b0-0665f81359cc">这个函数的文档</a>看了一下，它的声明如下：</p><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">mclInitializeApplication</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> **options, <span class="hljs-type">int</span> count)</span></span></code></pre></div><p>其中第一个参数是 C 风格的字符串数组，第二个参数是数组的大小，也就是说，上面提到的解决方案的第二个参数应该为 <code>1</code> 才对，于是修改如下：</p><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* args[] = &#123; <span class="hljs-string">&quot;-nojvm&quot;</span> &#125;;<span class="hljs-keyword">auto</span> ok = <span class="hljs-built_in">mclInitializeApplication</span>(args, <span class="hljs-number">1</span>);</code></pre></div><p>经测试，修改后的代码也没有问题，但是更严谨，免得后面又出什么问题。不过奇怪的是，在文档中指出，<code>-nojvm</code> 在 Linux 平台有效，但我明明是在 Windows 10 和 Visual Studio 2022 上跑的，这个选项却也生效了。</p><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>Whatever，至此问题都处理完了。下班！</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>cpp</tag>
+      
+      <tag>DLL</tag>
+      
+      <tag>Matlab</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>在微信部署 AI 助手 [未完成]</title>
     <link href="/2025/03/20/chatgpt-on-wechat/"/>
     <url>/2025/03/20/chatgpt-on-wechat/</url>
