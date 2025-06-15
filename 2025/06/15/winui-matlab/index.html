@@ -19,22 +19,24 @@
   <meta name="author" content="Hin">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="近期在写实验程序时需要用到一个厂商给的 SDK，那么在 cmake 里应该就是添加一个 IMPORTED 的动态库，并且配置一些参数就可以了。 add_library(NTSDK SHARED IMPORTED)  set_target_properties(NTSDK PROPERTIES   IMPORTED_IMPLIB &quot;$&amp;#123;CMAKE_CURRENT_SOURCE_D">
+    <meta name="description" content="背景近期，需要为项目写一个集成工业控制上位机软件，其中有一个机器人的运动学逆解依赖了 Matlab 的导出库。基于这个导出库函数包装了一个求解器类，编写单元测试后，实测能正常运行。 但是在 WinUI3 写的图形界面中引用这个库时，却报出了如下错误：  DllNotFoundException: Unable to load DLL ‘mclmcrrt23_2.dll’ or one of its">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cmake 找不到动态链接库">
-<meta property="og:url" content="https://worranhin.github.io/2024/09/14/cmake/index.html">
+<meta property="og:title" content="在 WinUI3 应用中使用 Matlab 导出共享库的问题">
+<meta property="og:url" content="https://worranhin.github.io/2025/06/15/winui-matlab/index.html">
 <meta property="og:site_name" content="Hin&#39;s 灵质空间">
-<meta property="og:description" content="近期在写实验程序时需要用到一个厂商给的 SDK，那么在 cmake 里应该就是添加一个 IMPORTED 的动态库，并且配置一些参数就可以了。 add_library(NTSDK SHARED IMPORTED)  set_target_properties(NTSDK PROPERTIES   IMPORTED_IMPLIB &quot;$&amp;#123;CMAKE_CURRENT_SOURCE_D">
+<meta property="og:description" content="背景近期，需要为项目写一个集成工业控制上位机软件，其中有一个机器人的运动学逆解依赖了 Matlab 的导出库。基于这个导出库函数包装了一个求解器类，编写单元测试后，实测能正常运行。 但是在 WinUI3 写的图形界面中引用这个库时，却报出了如下错误：  DllNotFoundException: Unable to load DLL ‘mclmcrrt23_2.dll’ or one of its">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-14T09:22:49.000Z">
-<meta property="article:modified_time" content="2025-06-15T07:28:25.966Z">
+<meta property="article:published_time" content="2025-06-15T04:43:40.000Z">
+<meta property="article:modified_time" content="2025-06-15T07:28:25.974Z">
 <meta property="article:author" content="Hin">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="WinUI3">
+<meta property="article:tag" content="MSIX">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Cmake 找不到动态链接库 | Hin&#39;s 灵质空间</title>
+  <title>在 WinUI3 应用中使用 Matlab 导出共享库的问题 | Hin&#39;s 灵质空间</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">Cmake 找不到动态链接库</span>
+            <span id="subtitle">在 WinUI3 应用中使用 Matlab 导出共享库的问题</span>
           
         </div>
 
@@ -225,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-14 17:22" pubdate>
-          2024年9月14日 下午
+        <time datetime="2025-06-15 12:43" pubdate>
+          2025年6月15日 下午
         </time>
       </span>
     
@@ -237,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          247 字
+          656 字
         
       </span>
     
@@ -248,7 +250,7 @@
         
         
         
-          3 分钟
+          6 分钟
         
       </span>
     
@@ -285,40 +287,31 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Cmake 找不到动态链接库</h1>
+            <h1 id="seo-header">在 WinUI3 应用中使用 Matlab 导出共享库的问题</h1>
             
             
               <div class="markdown-body">
                 
-                <p>近期在写实验程序时需要用到一个厂商给的 SDK，那么在 cmake 里应该就是添加一个 <code>IMPORTED</code> 的动态库，并且配置一些参数就可以了。</p>
-<div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(NTSDK SHARED IMPORTED)
-
-<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES
-  IMPORTED_IMPLIB <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.lib&quot;</span>
-)
-
-<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES
-  IMPORTED_LOCATION <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.dll&quot;</span>
-)</code></pre></div>
-
-<p>但奇怪的是这段代码在项目根目录中的 CmakeLists.txt 还可以正常生成，但是当我想要将它写入子文件夹后再用 <code>add_subdirectory</code> 添加嵌套的 <code>CmakeLists.txt</code> 后，编译时却发现找不到这个库了。</p>
-<div class="code-wrapper"><pre><code class="hljs gradle">[build] some<span class="hljs-regexp">/path/</span>x86_64-w64-mingw32<span class="hljs-regexp">/bin/</span>ld.exe: cannot <span class="hljs-keyword">find</span> -lNTSDK: No such <span class="hljs-keyword">file</span> or directory</code></pre></div>
-
-<p>反复试了几次还是不行，于是去翻看<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries">官方的文档</a>，发现调用实例后面还有个 <code>GLOBAL</code> 选项。仔细一看，这个选项的作用正是令 target name 全局可见！</p>
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>近期，需要为项目写一个集成工业控制上位机软件，其中有一个机器人的运动学逆解依赖了 Matlab 的导出库。基于这个导出库函数包装了一个求解器类，编写单元测试后，实测能正常运行。</p>
+<p>但是在 WinUI3 写的图形界面中引用这个库时，却报出了如下错误：</p>
 <blockquote>
-<p>GLOBAL</p>
-<p>   Make the target name globally visible.</p>
+<p>DllNotFoundException: Unable to load DLL ‘mclmcrrt23_2.dll’ or one of its dependencies: 找不到指定的模块。 (0x8007007E)</p>
 </blockquote>
-<p>于是在子目录下的 <code>CmakeLists.txt</code> 中的 <code>add_library</code> 加入 <code>GLOBAL</code> 选项，就可以正常运行了。</p>
-<div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(NTSDK SHARED IMPORTED)
+<p>很明显，这是找不到 DLL 了，但是经确认这个 dll 是在 Matlab Runtime 安装目录下的一个子目录下，且这个目录也都在系统的 PATH 环境变量中。正常的话不应该会找不到的喵。为了进一步验证，我将这个文件直接丢到运行目录下，同样也是会报出这个错误。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>由于这个东西在单元测试都能正常加载，在 WinUI 项目中就不行，这就非常可疑。所以猜测是 WinUI 项目的一些配置问题。所以打开 WinUI 项目的属性，翻阅了一下。发现有个 MSIX Packaging 的选项非常可疑，这个选项默认是启用的状态。我试着把它关闭之后，再编译运行，结果竟然就可以正常运行了。</p>
+<h2 id="可能的原因"><a href="#可能的原因" class="headerlink" title="可能的原因"></a>可能的原因</h2><h3 id="MSIX"><a href="#MSIX" class="headerlink" title="MSIX"></a>MSIX</h3><p>要知道这个东西为什么会有影响，那就要先去了解一下，这个 MSIX 是个什么东西。参考<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/msix/overview">微软关于 MSIX 的文档</a>，MSIX 就是 Windows 的新一代软件打包格式，具有稳定、快速等这样那样的有点，看上去没什么可疑的地方。但是在文档的 HighLights 下提到了 Package Support Framework(PSF) 用于修复一些运行时问题。那么继续点进这个<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/msix/psf/package-support-framework-overview">链接</a>就发现，其中一个问题就是找不到 DLL。</p>
+<blockquote>
+<p>Here are some common examples where you can find the Package Support Framework useful:</p>
+<ul>
+<li>Your app can’t find some DLLs when launched. You may need to set your current working directory. You can learn about the required current working directory in the original shortcut before you converted to MSIX.</li>
+<li>The app writes into the install folder. You will typically see it by “Access Denied” errors in Process Monitor.</li>
+<li>Your app needs to pass parameters to the executable on launch. You can learn more how PSF can help by going here and learn more about the available configurations here.</li>
+</ul>
+</blockquote>
+<p>继续往下看，就会发现这个 PSF 有一个 Dynamic Library Fixup，这似乎就是用于解决找不到 DLL 的问题的。但是，这是真的很麻烦啊，Matlab runtime 有这么多 dll，难道还要一个个去重映射吗。更何况我们的项目确实也没必要使用到 MSIX 喵。所以直接禁用 MSIX 是可行的。</p>
+<p>但说到底，为什么使用 MSIX 会导致如上问题呢。原因似乎是 MSIX 软件会运行在一个类似沙盒的容器中，可能访问不到系统的环境变量 PATH，而导致运行时找不到 MATLAB 所需的 DLL 文件。
+可以参考这篇帖子：<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/discussions/msix-discussions/access-sdk-outside-of-msix-application/2039170">Access SDK outside of MSIX application</a>，以及关于打包与不打包的的优缺点的<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/">文档</a>。</p>
 
-<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES
-  IMPORTED_IMPLIB <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.lib&quot;</span>
-)
-
-<span class="hljs-keyword">set_target_properties</span>(NTSDK PROPERTIES
-  IMPORTED_LOCATION <span class="hljs-string">&quot;$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/lib64/NTControl.dll&quot;</span>
-)</code></pre></div>
                 
               </div>
             
@@ -326,6 +319,17 @@
             <div>
               <div class="post-metas my-3">
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Matlab/" class="print-no-link">#Matlab</a>
+      
+        <a href="/tags/WinUI3/" class="print-no-link">#WinUI3</a>
+      
+        <a href="/tags/MSIX/" class="print-no-link">#MSIX</a>
+      
+    </div>
   
 </div>
 
@@ -335,8 +339,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Cmake 找不到动态链接库</div>
-      <div>https://worranhin.github.io/2024/09/14/cmake/</div>
+      <div>在 WinUI3 应用中使用 Matlab 导出共享库的问题</div>
+      <div>https://worranhin.github.io/2025/06/15/winui-matlab/</div>
     </div>
     <div class="license-meta">
       
@@ -348,7 +352,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年9月14日</div>
+          <div>2025年6月15日</div>
         </div>
       
       
@@ -386,18 +390,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/17/pip-conda/" title="Pip Install Gymnasium[box2d] 失败">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Pip Install Gymnasium[box2d] 失败</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/27/serial-monitor/" title="Vscode Serial Monitor 的显示失误">
-                        <span class="hidden-mobile">Vscode Serial Monitor 的显示失误</span>
+                      <a href="/2025/05/30/matlab-cpp/" title="在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题">
+                        <span class="hidden-mobile">在 C++ 中使用 Matlab 导出 Dll 时遇到的一些问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
