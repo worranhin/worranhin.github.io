@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>VSCode Ctrl + . 失效</title>
+    <link href="/2025/07/10/vscode-keyboard/"/>
+    <url>/2025/07/10/vscode-keyboard/</url>
+    
+    <content type="html"><![CDATA[<p>在使用 vscode 等 IDE 时，会有一个快速修复的选项，它的快捷键默认是 <code>ctrl</code> + <code>.</code>，但是奇怪的是这个快捷键是失效的，按 <code>ctrl</code> + <code>.</code> 并没有反应。这时候其实就合理怀疑是什么应用占用了快捷键了，但是却找不到任何迹象，在 vscode 设置快捷键的地方，也不能设置 <code>ctrl</code> + <code>.</code> 的组合键。</p><p>为了找到这个占用的应用，后台应用一个个地退出，但终究无所获。直到最后灵机一动，切换了输入法，就可以了。原来是微软输入法呀！</p><p>那要解决这个问题，就只能要么改 VSCode，要么改输入法的快捷键了。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>vscode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>在 WinUI3 应用中使用 Matlab 导出共享库的问题</title>
     <link href="/2025/06/15/winui-matlab/"/>
     <url>/2025/06/15/winui-matlab/</url>

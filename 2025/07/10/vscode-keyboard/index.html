@@ -19,25 +19,22 @@
   <meta name="author" content="Hin">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="今天调试程序的时候遇见一个问题，就是在 Arduino 框架下写的 stm32 串口通讯程序不能发送 0x7f 以上的数值，这有点奇怪。代码如下： Serial.write(0xff);  &#x2F;&#x2F; （任何大于 0x7f 的数）输出结果为 fffd  这其实能看出来有点诡异，因为 0x7f 应该就是 ascii 码的最大值，不能输出比这大的数，感觉是遇到了一些奇怪的机制。在 Bing 中稍微搜索了一下">
+    <meta name="description" content="在使用 vscode 等 IDE 时，会有一个快速修复的选项，它的快捷键默认是 ctrl + .，但是奇怪的是这个快捷键是失效的，按 ctrl + . 并没有反应。这时候其实就合理怀疑是什么应用占用了快捷键了，但是却找不到任何迹象，在 vscode 设置快捷键的地方，也不能设置 ctrl + . 的组合键。 为了找到这个占用的应用，后台应用一个个地退出，但终究无所获。直到最后灵机一动，切换了输入法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vscode Serial Monitor 的显示失误">
-<meta property="og:url" content="https://worranhin.github.io/2024/05/27/serial-monitor/index.html">
+<meta property="og:title" content="VSCode Ctrl + . 失效">
+<meta property="og:url" content="https://worranhin.github.io/2025/07/10/vscode-keyboard/index.html">
 <meta property="og:site_name" content="Hin&#39;s 灵质空间">
-<meta property="og:description" content="今天调试程序的时候遇见一个问题，就是在 Arduino 框架下写的 stm32 串口通讯程序不能发送 0x7f 以上的数值，这有点奇怪。代码如下： Serial.write(0xff);  &#x2F;&#x2F; （任何大于 0x7f 的数）输出结果为 fffd  这其实能看出来有点诡异，因为 0x7f 应该就是 ascii 码的最大值，不能输出比这大的数，感觉是遇到了一些奇怪的机制。在 Bing 中稍微搜索了一下">
+<meta property="og:description" content="在使用 vscode 等 IDE 时，会有一个快速修复的选项，它的快捷键默认是 ctrl + .，但是奇怪的是这个快捷键是失效的，按 ctrl + . 并没有反应。这时候其实就合理怀疑是什么应用占用了快捷键了，但是却找不到任何迹象，在 vscode 设置快捷键的地方，也不能设置 ctrl + . 的组合键。 为了找到这个占用的应用，后台应用一个个地退出，但终究无所获。直到最后灵机一动，切换了输入法">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-05-27T12:37:03.000Z">
-<meta property="article:modified_time" content="2025-07-10T08:25:11.027Z">
+<meta property="article:published_time" content="2025-07-10T08:13:57.000Z">
+<meta property="article:modified_time" content="2025-07-10T08:25:11.035Z">
 <meta property="article:author" content="Hin">
-<meta property="article:tag" content="AI">
-<meta property="article:tag" content="工具">
-<meta property="article:tag" content="嵌入式">
 <meta property="article:tag" content="vscode">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Vscode Serial Monitor 的显示失误 | Hin&#39;s 灵质空间</title>
+  <title>VSCode Ctrl + . 失效 | Hin&#39;s 灵质空间</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -217,7 +214,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">Vscode Serial Monitor 的显示失误</span>
+            <span id="subtitle">VSCode Ctrl + . 失效</span>
           
         </div>
 
@@ -228,8 +225,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-27 20:37" pubdate>
-          2024年5月27日 晚上
+        <time datetime="2025-07-10 16:13" pubdate>
+          2025年7月10日 下午
         </time>
       </span>
     
@@ -240,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          299 字
+          180 字
         
       </span>
     
@@ -251,7 +248,7 @@
         
         
         
-          3 分钟
+          2 分钟
         
       </span>
     
@@ -288,21 +285,14 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Vscode Serial Monitor 的显示失误</h1>
+            <h1 id="seo-header">VSCode Ctrl + . 失效</h1>
             
             
               <div class="markdown-body">
                 
-                <p>今天调试程序的时候遇见一个问题，就是在 Arduino 框架下写的 stm32 串口通讯程序不能发送 0x7f 以上的数值，这有点奇怪。代码如下：</p>
-<div class="code-wrapper"><pre><code class="hljs cpp">Serial.<span class="hljs-built_in">write</span>(<span class="hljs-number">0xff</span>);  <span class="hljs-comment">// （任何大于 0x7f 的数）输出结果为 fffd</span></code></pre></div>
-
-<p>这其实能看出来有点诡异，因为 0x7f 应该就是 ascii 码的最大值，不能输出比这大的数，感觉是遇到了一些奇怪的机制。在 Bing 中稍微搜索了一下，好像也没看到类似的问题。于是去质问 Perplexity，诶，竟然就真的问出来了。</p>
-<blockquote>
-<p>Based on the provided search results, when sending values greater than 0x7F (127 in decimal) over serial using Serial.write() in Arduino, you may encounter an issue where the values are displayed incorrectly, often as “fffd”, in the serial monitor or terminal.
-This behavior is not an issue with the Serial.write() function itself, but rather with how the serial monitor or terminal interprets and displays the received bytes.</p>
-</blockquote>
-<p>他说这不是 Arduino 本身的问题，而是串口监视器的问题，他还附上了一个 Github issue 的链接 ( <a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-serial-monitor/issues/139">https://github.com/microsoft/vscode-serial-monitor/issues/139</a> )。这个就是 vscode 串行监视器的仓库，在这个 issue 里就有人提出了一样的问题，也有人给出了一个解决了问题的版本。装上那个版本试了试，确实就可以了。</p>
-<p>这个故事告诉我们，面对一些疑难杂症时，将问题尽可能描述清楚，AI 小助手还真能帮上忙呢。</p>
+                <p>在使用 vscode 等 IDE 时，会有一个快速修复的选项，它的快捷键默认是 <code>ctrl</code> + <code>.</code>，但是奇怪的是这个快捷键是失效的，按 <code>ctrl</code> + <code>.</code> 并没有反应。这时候其实就合理怀疑是什么应用占用了快捷键了，但是却找不到任何迹象，在 vscode 设置快捷键的地方，也不能设置 <code>ctrl</code> + <code>.</code> 的组合键。</p>
+<p>为了找到这个占用的应用，后台应用一个个地退出，但终究无所获。直到最后灵机一动，切换了输入法，就可以了。原来是微软输入法呀！</p>
+<p>那要解决这个问题，就只能要么改 VSCode，要么改输入法的快捷键了。</p>
 
                 
               </div>
@@ -314,12 +304,6 @@ This behavior is not an issue with the Serial.write() function itself, but rathe
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/AI/" class="print-no-link">#AI</a>
-      
-        <a href="/tags/%E5%B7%A5%E5%85%B7/" class="print-no-link">#工具</a>
-      
-        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="print-no-link">#嵌入式</a>
       
         <a href="/tags/vscode/" class="print-no-link">#vscode</a>
       
@@ -333,8 +317,8 @@ This behavior is not an issue with the Serial.write() function itself, but rathe
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Vscode Serial Monitor 的显示失误</div>
-      <div>https://worranhin.github.io/2024/05/27/serial-monitor/</div>
+      <div>VSCode Ctrl + . 失效</div>
+      <div>https://worranhin.github.io/2025/07/10/vscode-keyboard/</div>
     </div>
     <div class="license-meta">
       
@@ -346,7 +330,7 @@ This behavior is not an issue with the Serial.write() function itself, but rathe
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年5月27日</div>
+          <div>2025年7月10日</div>
         </div>
       
       
@@ -384,18 +368,12 @@ This behavior is not an issue with the Serial.write() function itself, but rathe
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/14/cmake/" title="Cmake 找不到动态链接库">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Cmake 找不到动态链接库</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/18/LibreText/" title="LibreTexts">
-                        <span class="hidden-mobile">LibreTexts</span>
+                      <a href="/2025/06/15/winui-matlab/" title="在 WinUI3 应用中使用 Matlab 导出共享库的问题">
+                        <span class="hidden-mobile">在 WinUI3 应用中使用 Matlab 导出共享库的问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
