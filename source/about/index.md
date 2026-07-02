@@ -78,6 +78,12 @@ date: 2023-04-08 22:14:28
 - 移动端游戏
   - 《明日方舟》
 
+## 性格测试
+
+下面贴一个我的大五人格测试 (OCEAN)，嘻嘻
+
+<iframe src="https://bigfivepersonality.me/zh/embed/Zw8MUXM7" width="440" height="560" frameborder="0"></iframe>
+
 ---
 
-*最后更新: 2025年*
+*最后更新: 2026年*
